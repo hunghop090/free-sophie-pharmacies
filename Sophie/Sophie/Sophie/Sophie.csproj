@@ -1,0 +1,143 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>true</CopyRefAssembliesToPublishDirectory>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <Nullable>annotations</Nullable>
+    <Configurations>Debug;Release;Staging;Product</Configurations>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+	<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+	<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>  
+	<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+	<GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+	<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+	<GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+	<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resource\" />
+    <None Remove="Resource\Dtos\" />
+    <None Remove="Resource\Entities\" />
+    <None Remove="Repository\" />
+    <None Remove="Repository\Interface\" />
+    <None Remove="Resource\Model\" />
+    <None Remove="AspNetCore.Identity.Mongo" />
+    <None Remove="log4net" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Microsoft.AspNetCore.Authentication" />
+    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Microsoft.AspNetCore.Authentication.Google" />
+    <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <None Remove="Swashbuckle.AspNetCore" />
+    <None Remove="StackExchange.Redis" />
+    <None Remove="JWT" />
+    <None Remove="EasyCronJob.Core" />
+    <None Remove="AWSSDK.Extensions.NETCore.Setup" />
+    <None Remove="AWSSDK.S3" />
+    <None Remove="AWSSDK.Core" />
+    <None Remove="FluentValidation.AspNetCore" />
+    <None Remove="Resource\Entities\MedicalAppointment\" />
+    <None Remove="Resource\Dtos\MedicalAppointment\" />
+    <None Remove="Google.Cloud.Firestore" />
+    <None Remove="RSAExtensions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Services\NotificationService\" />
+    <None Remove="Controllers\" />
+    <None Remove="Controllers\API\" />
+    <None Remove="Model\" />
+    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <None Remove="Mapping\" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Units\" />
+    <None Remove="Services\" />
+    <None Remove="Services\EmailSenderService\" />
+    <None Remove="SendGrid" />
+    <None Remove="RestSharp" />
+    <None Remove="Languages\" />
+    <None Remove="MaxMind.GeoIP2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.11" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
+    <PackageReference Include="SendGrid" Version="9.24.4" />
+    <PackageReference Include="RestSharp" Version="106.12.0" />
+    <PackageReference Include="MaxMind.GeoIP2" Version="4.0.1" />
+    <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.3.2" />
+    <PackageReference Include="log4net" Version="2.0.12" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.79" />
+    <PackageReference Include="JWT" Version="8.5.0" />
+    <PackageReference Include="EasyCronJob.Core" Version="1.0.1" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.104" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.1" />
+    <PackageReference Include="AWSSDK.Core" Version="3.3.104" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
+    <PackageReference Include="Google.Cloud.Firestore" Version="2.5.0" />
+    <PackageReference Include="RSAExtensions" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mapping\" />
+    <Folder Include="Units\" />
+    <Folder Include="Services\EmailSenderService\" />
+    <Folder Include="Languages\" />
+    <Folder Include="Services\NotificationService\" />
+    <Folder Include="Model\" />
+    <Folder Include="Resource\Entities\MedicalAppointment\" />
+    <Folder Include="Resource\Dtos\MedicalAppointment\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Certificate\**" CopyToPublishDirectory="Always" CopyToOutputDirectory="Always" />
+    <None Include="Utils\AssemblyLibrary\libs\**" CopyToPublishDirectory="Always" CopyToOutputDirectory="Always" />
+    <None Include="GeoLite2\**" CopyToPublishDirectory="Always" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+  <Target Name="Production" Condition="$([System.Environment]::GetEnvironmentVariable('MY_PC')) != 'TVT'" BeforeTargets="Build">
+    <Message Text="===&gt;MY_PC=$([System.Environment]::GetEnvironmentVariable('MY_PC'))" />
+  </Target>
+
+  <Target Name="Development" Condition="$([System.Environment]::GetEnvironmentVariable('MY_PC')) == 'TVT'" BeforeTargets="Build">
+    <Message Text="===&gt;MY_PC=$([System.Environment]::GetEnvironmentVariable('MY_PC'))" />
+  </Target>
+  
+  <ItemGroup>
+    <Reference Include="App.Core" Condition="$([System.Environment]::GetEnvironmentVariable('MY_PC')) != 'TVT'" BeforeTargets="Build">
+      <HintPath>Units\AssemblyLibrary\libs\App.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="App.SharedLib" Condition="$([System.Environment]::GetEnvironmentVariable('MY_PC')) != 'TVT'" BeforeTargets="Build">
+      <HintPath>Units\AssemblyLibrary\libs\App.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="App.Security" Condition="$([System.Environment]::GetEnvironmentVariable('MY_PC')) != 'TVT'" BeforeTargets="Build">
+      <HintPath>Units\AssemblyLibrary\libs\App.SharedLib.dll</HintPath>
+    </Reference>
+
+    <ProjectReference Include="..\App.Core\App.Core.csproj" Condition="$([System.Environment]::GetEnvironmentVariable('MY_PC')) == 'TVT'" BeforeTargets="Build">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\App.SharedLib\App.SharedLib.csproj" Condition="$([System.Environment]::GetEnvironmentVariable('MY_PC')) == 'TVT'" BeforeTargets="Build">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\App.Security\App.Security.csproj" Condition="$([System.Environment]::GetEnvironmentVariable('MY_PC')) == 'TVT'" BeforeTargets="Build">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  
+</Project>

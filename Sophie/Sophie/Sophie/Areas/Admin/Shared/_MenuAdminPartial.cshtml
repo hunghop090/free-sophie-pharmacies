@@ -1,0 +1,592 @@
+﻿@namespace Sophie.Areas.Admin.Shared
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using App.Core.Entities
+@using App.Core.Constants
+@using Sophie.Units
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+        <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">@Constants.AppName.ToUpper()</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="height: 60px;">
+            <div class="image">
+                <img src="/img/avatar.png" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a asp-area="Admin" asp-page="/User/Manage/Index" class="d-block" style="word-break: break-all;word-wrap: break-word;white-space: normal;">
+                        @User.Identity.Name<br>
+                        @foreach (var claim in @User.Claims.Where(c => c.Type == ClaimTypes.Role).ToList())
+                        {
+                            @claim.Value
+                            ;
+                        }
+                    </a>
+                }
+                else
+                {
+                    <a asp-area="Admin" asp-page="/User/Manage/Index" class="d-block" style="word-break: break-all;word-wrap: break-word;white-space: normal;">
+                        Administrator
+                    </a>
+                }
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                @*Dashboard*@
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-page="/Dashboard/Index" class="nav-link @NavigationPages.Dashboard_NavClass(ViewContext)">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Dashboard <span class="right badge badge-danger">New</span></p>
+                    </a>
+                </li>
+
+                @if (User.IsInRole(RolePrefix.Developer))
+                {
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-page="/User/Manage/Index" class="nav-link @NavigationPages.Profiles_NavClass(ViewContext)">
+                            <i class="nav-icon fas fa-user-cog"></i>
+                            <p>Profile Settings</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-page="/ClientManager/Index" class="nav-link @NavigationPages.ClientManager_NavClass(ViewContext)">
+                            <i class="nav-icon far fa-calendar-alt"></i>
+                            <p>Client Manager</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-page="/UserManage/Index" class="nav-link @NavigationPages.UserManage_NavClass(ViewContext)">
+                            <i class="nav-icon fas fa-users-cog"></i>
+                            <p>Users Manage</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-page="/Development/Index" class="nav-link @NavigationPages.Development_NavClass(ViewContext)">
+                            <i class="nav-icon fa fa-paper-plane"></i>
+                            <p>Development</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-page="/SystemSetting/Index" class="nav-link @NavigationPages.SystemSetting_NavClass(ViewContext)">
+                            <i class="nav-icon fas fa-hammer"></i>
+                            <p>System Setting</p>
+                        </a>
+                    </li>
+                    <li class="nav-item has-treeview @(( NavigationPages.PostgreSQL_NavClass(ViewContext) != null || NavigationPages.MongoDB_NavClass(ViewContext) != null) ? "menu-open":"")">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fa fa-database"></i>
+                            <p>
+                                Backup & Restore
+                                <i class="fas fa-angle-left right"></i>
+                                <span class="badge badge-info right">2</span>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-area="Admin" asp-page="/DatabasePage/MongoDB" class="nav-link @NavigationPages.MongoDB_NavClass(ViewContext)">
+                                    <i class="nav-icon far fa-circle text-info"></i>
+                                    <p>MongoDB</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Admin" asp-page="/DatabasePage/PostgresDB" class="nav-link @NavigationPages.PostgreSQL_NavClass(ViewContext)">
+                                    <i class="nav-icon far fa-circle text-warning"></i>
+                                    <p>PostgresDB</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+
+
+
+                <li class="nav-header">ACCOUNT</li>
+                @*Account*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_Account_NavClass(ViewContext) != null || NavigationPages.Create_Account_NavClass(ViewContext) != null || NavigationPages.Edit_Account_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Member
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/AccountPage/List" class="nav-link @NavigationPages.List_Account_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/AccountPage/Create" class="nav-link @NavigationPages.Create_Account_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user-tie text-info"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @*Hospital*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_Hospital_NavClass(ViewContext) != null || NavigationPages.Create_Hospital_NavClass(ViewContext) != null || NavigationPages.Edit_Hospital_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-clinic-medical"></i>
+                        <p>
+                            Hospital
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">1</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/HospitalPage/List" class="nav-link @NavigationPages.List_Hospital_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+                    </ul>
+                    @if (User.IsInRole(RolePrefix.Developer))
+                    {
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-area="Admin" asp-page="/HospitalPage/Create" class="nav-link @NavigationPages.Create_Hospital_NavClass(ViewContext)">
+                                    <i class="nav-icon fas fa-user-tie text-info"></i>
+                                    <p>Create</p>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </li>
+                @*Doctor*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_Doctor_NavClass(ViewContext) != null || NavigationPages.Create_Doctor_NavClass(ViewContext) != null || NavigationPages.Edit_Doctor_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-user-nurse"></i>
+                        <p>
+                            Doctor
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">1</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/DoctorPage/List" class="nav-link @NavigationPages.List_Doctor_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+                    </ul>
+                    @if (User.IsInRole(RolePrefix.Developer))
+                    {
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-area="Admin" asp-page="/DoctorPage/Create" class="nav-link @NavigationPages.Create_Doctor_NavClass(ViewContext)">
+                                    <i class="nav-icon fas fa-user-tie text-info"></i>
+                                    <p>Create</p>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </li>
+                @*Relationship*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_Relationship_NavClass(ViewContext) != null || NavigationPages.Create_Relationship_NavClass(ViewContext) != null || NavigationPages.Edit_Relationship_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-file-medical"></i>
+                        <p>
+                            Relationship
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">1</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/RelationshipPage/List" class="nav-link @NavigationPages.List_Relationship_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+                    </ul>
+                    @if (User.IsInRole(RolePrefix.Developer))
+                    {
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-area="Admin" asp-page="/RelationshipPage/Create" class="nav-link @NavigationPages.Create_Relationship_NavClass(ViewContext)">
+                                    <i class="nav-icon fas fa-user-tie text-info"></i>
+                                    <p>Create</p>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </li>
+                @*Appointment*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_Appointment_NavClass(ViewContext) != null || NavigationPages.Create_Appointment_NavClass(ViewContext) != null || NavigationPages.Edit_Appointment_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-notes-medical"></i>
+                        <p>
+                            Appointment
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/AppointmentPage/List" class="nav-link @NavigationPages.List_Appointment_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+                    </ul>
+                    @if (User.IsInRole(RolePrefix.Developer))
+                    {
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-area="Admin" asp-page="/AppointmentPage/Create" class="nav-link @NavigationPages.Create_Appointment_NavClass(ViewContext)">
+                                    <i class="nav-icon fas fa-user-tie text-info"></i>
+                                    <p>Create</p>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </li>
+
+
+
+
+
+                <li class="nav-header">Shop</li>
+                @*Shop*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_Shop_NavClass(ViewContext) != null || NavigationPages.Create_Shop_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-notes-medical"></i>
+                        <p>
+                            Shop
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/ShopPage/Shop/ListShop" class="nav-link @NavigationPages.List_Shop_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List Shop</p>
+                            </a>
+                        </li>
+                    </ul>
+                    @if (User.IsInRole(RolePrefix.Developer) || User.IsInRole(RolePrefix.AdminSys) || User.IsInRole(RolePrefix.Admin))
+                    {
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-area="Admin" asp-page="/ShopPage/Shop/CreateShop" class="nav-link @NavigationPages.Create_Shop_NavClass(ViewContext)">
+                                    <i class="nav-icon fas fa-user-tie text-info"></i>
+                                    <p>Create Shop</p>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </li>
+                @*Category*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_Category_Product_NavClass(ViewContext) != null || NavigationPages.Create_Category_Product_NavClass(ViewContext) != null || NavigationPages.Edit_Category_Product_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-notes-medical"></i>
+                        <p>
+                            Category
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/ShopPage/Category/ListCategory" class="nav-link @NavigationPages.List_Category_Product_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List Category</p>
+                            </a>
+                        </li>
+                    </ul>
+                    @if (User.IsInRole(RolePrefix.Developer) || User.IsInRole(RolePrefix.AdminSys) || User.IsInRole(RolePrefix.Admin))
+                    {
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-area="Admin" asp-page="/ShopPage/Category/CreateCategory" class="nav-link @NavigationPages.Create_Category_Product_NavClass(ViewContext)">
+                                    <i class="nav-icon fas fa-user-tie text-info"></i>
+                                    <p>Create Category</p>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </li>
+                @*Product*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_Product_NavClass(ViewContext) != null || NavigationPages.Create_Product_NavClass(ViewContext) != null || NavigationPages.Edit_Product_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-notes-medical"></i>
+                        <p>
+                            Product
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/ShopPage/Product/ListProduct" class="nav-link @NavigationPages.List_Product_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List Product</p>
+                            </a>
+                        </li>
+                    </ul>
+                    @if (User.IsInRole(RolePrefix.Developer) || User.IsInRole(RolePrefix.AdminSys) || User.IsInRole(RolePrefix.Admin))
+                    {
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-area="Admin" asp-page="/ShopPage/Product/CreateProduct" class="nav-link @NavigationPages.Create_Product_NavClass(ViewContext)">
+                                    <i class="nav-icon fas fa-user-tie text-info"></i>
+                                    <p>Create Product</p>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </li>
+                @*Order*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_Order_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-notes-medical"></i>
+                        <p>
+                            Order
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">1</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/ShopPage/Order/ListOrder" class="nav-link @NavigationPages.List_Order_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List Order</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @*DraftOrder*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_DraftOrder_NavClass(ViewContext) != null || NavigationPages.Create_DraftOrder_NavClass(ViewContext) != null ) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-notes-medical"></i>
+                        <p>
+                            DraftOrder
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/ShopPage/DraftOrder/ListDraftOrder" class="nav-link @NavigationPages.List_DraftOrder_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List DraftOrder</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/ShopPage/DraftOrder/CreateDraftOrder" class="nav-link @NavigationPages.Create_DraftOrder_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user-tie text-info"></i>
+                                <p>Create DraftOrder</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @*Promotion*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_Promotion_NavClass(ViewContext) != null || NavigationPages.Create_Promotion_NavClass(ViewContext) != null ) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-notes-medical"></i>
+                        <p>
+                            Promotion
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/ShopPage/Promotion/ListPromotion" class="nav-link @NavigationPages.List_Promotion_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List Promotion</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/ShopPage/Promotion/CreatePromotion" class="nav-link @NavigationPages.Create_Promotion_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user-tie text-info"></i>
+                                <p>Create Promotion</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @*TransportPromotion*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_TransportPromotion_NavClass(ViewContext) != null || NavigationPages.Create_TransportPromotion_NavClass(ViewContext) != null ) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-notes-medical"></i>
+                        <p>
+                            TransportPromotion
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/ShopPage/TransportPromotion/ListTransportPromotion" class="nav-link @NavigationPages.List_TransportPromotion_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user text-info"></i>
+                                <p>List TransportPromotion</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/ShopPage/TransportPromotion/CreateTransportPromotion" class="nav-link @NavigationPages.Create_TransportPromotion_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-user-tie text-info"></i>
+                                <p>Create TransportPromotion</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+
+
+
+
+
+                <li class="nav-header">UTILITIES</li>
+                @*Notification*@
+                <li class="nav-item has-treeview @(( NavigationPages.SendPush_Notification_NavClass(ViewContext) != null || NavigationPages.List_Notification_NavClass(ViewContext) != null || NavigationPages.Create_Notification_NavClass(ViewContext) != null || NavigationPages.Edit_Notification_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-notes-medical"></i>
+                        <p>
+                            Notification
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">3</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/NotificationPage/SendPush" class="nav-link @NavigationPages.SendPush_Notification_NavClass(ViewContext)">
+                                <i class="nav-icon far fa-paper-plane text-info"></i>
+                                <p>Send Push</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/NotificationPage/List" class="nav-link @NavigationPages.List_Notification_NavClass(ViewContext)">
+                                <i class="nav-icon fas fas fa-comments text-info"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/NotificationPage/Create" class="nav-link @NavigationPages.Create_Notification_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-comment-medical text-info"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @*News*@
+                <li class="nav-item has-treeview @(( NavigationPages.List_News_NavClass(ViewContext) != null || NavigationPages.Create_News_NavClass(ViewContext) != null || NavigationPages.Edit_News_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-newspaper"></i>
+                        <p>
+                            News
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-success right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/NewsPage/List" class="nav-link @NavigationPages.List_News_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-scroll text-info"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/NewsPage/Create" class="nav-link @NavigationPages.Create_News_NavClass(ViewContext)">
+                                <i class="nav-icon fas fa-calendar-plus text-info"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @*Payment*@
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-page="/SettingPage/Index" class="nav-link @NavigationPages.Setting_NavClass(ViewContext)">
+                        <i class="nav-icon fas fa-key text-info"></i>
+                        <p>Setting</p>
+                    </a>
+                </li>
+
+
+
+                <li class="nav-header">LOGGING</li>
+                <li class="nav-item has-treeview @(( NavigationPages.MongoLogs_NavClass(ViewContext) != null || NavigationPages.FileLogs_NavClass(ViewContext) != null) ? "menu-open":"")">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-book-dead"></i>
+                        <p>
+                            Audit Logging
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">2</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/AuditLogging/MongoLogs" class="nav-link @NavigationPages.MongoLogs_NavClass(ViewContext)">
+                                <i class="nav-icon fa fa-bug text-info"></i>
+                                <p>Mongo-Logs</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-page="/AuditLogging/FileLogs" class="nav-link @NavigationPages.FileLogs_NavClass(ViewContext)">
+                                <i class="nav-icon fa fa-bug text-warning"></i>
+                                <p>File-Logs</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-page="/GuardDuty/Index" class="nav-link @NavigationPages.Support_NavClass(ViewContext)">
+                        <i class="nav-icon fa fa-user-secret"></i>
+                        <p>Support</p>
+                    </a>
+                </li>
+
+
+
+                <li class="nav-header">LOG OUT</li>
+                <li class="nav-item">
+                    <form class="nav-link" asp-area="Admin" asp-page="/User/Logout" asp-route-returnUrl="@Url.Action("Login", "Home", new { area = "" })">
+                        <button type="submit" style="background-color: transparent;border-color:transparent;color:#c2c7d0">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            <p class="text">Log out</p>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

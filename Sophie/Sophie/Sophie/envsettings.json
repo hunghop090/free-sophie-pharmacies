@@ -1,0 +1,11 @@
+﻿{
+  // Possible string values reported below. When empty it use ENV variable value or Visual Studio setting.
+  // - Production
+  // - Staging
+  // - Development
+  "ASPNETCORE_ENVIRONMENT": "Development",
+  //"ASPNETCORE_USE_HTTPS": true,
+  //"ASPNETCORE_USE_HTTP": false
+  "ASPNETCORE_USE_HTTPS": false,
+  "ASPNETCORE_USE_HTTP": true
+}

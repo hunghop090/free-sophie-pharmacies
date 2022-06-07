@@ -1,0 +1,11 @@
+﻿div.table-container tr[data-param-in="header"] {
+    display: none;
+}
+
+div#operations-Home-get_staging_api_Home_information tr[data-param-name="Handshake"] {
+    display: none;
+}
+
+div.curl-command {
+    display: none;
+}

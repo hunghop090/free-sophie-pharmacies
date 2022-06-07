@@ -1,0 +1,599 @@
+﻿[
+  // REPORT EXCEL
+  {
+    "Localized_Key": "EXCEL_REPORT_GLOBAL_TITLE",
+    "Localized_Value": "LEFT_TITLE=>Nhập thông  tin cho Mẫu số: D02-TS|RIGHT_TITLE=>Nhập thông  tin cho Mẫu số: TK1-TS"
+  },
+  {
+    "Localized_Key": "EXCEL_REPORT_TITLE",
+    "Localized_Value": "OLD_SALARY=>\"Mức đóng cũ\"&CHAR(10)&\"(Chỉ nhập trường hợp điều chỉnh mức đóng (DC))\"|NOW_SALARY=>Tiền lương|NOTE=>Ghi chú|PLACE_REGISTRATION_MEDICAL_CARE=>Nơi đăng ký KCB ban đầu (mã số)|HOUSEHOLD_INFO=>Thông tin chủ hộ (chỉ nhập đối với trường hợp không có sổ BHXH)"
+  },
+  {
+    "Localized_Key": "EXCEL_REPORT_SUB1",
+    "Localized_Value": ""
+  },
+  {
+    "Localized_Key": "EXCEL_REPORT_COLUMN",
+    "Localized_Value": "FULL_NAME=>Họ và tên|INSURANCE_NUMBER=>Số định danh (Mã số BHXH)|INSURANCE_BOOK_NUMBER=>Số sổ BHXH|BIRTH_DAY=>Ngày, tháng, năm sinh (<dd/mm/yyyy> hoặc <yyyy>)|GENDER=>Nữ (X)|INFO_EMPLOYEE=>Cấp bậc, chức vụ, chức danh nghề, nơi làm việc|OLD__SALARY__AMOUNT=>Tiền đồng|OLD__SALARY__COEFFICIENT=>Hệ số|OLD__SALARY__CV=>CV|OLD__SALARY__SENIORITY_VK=>Thâm niên VK (%)|OLD__SALARY__SENIORITY_JOB=>Thâm niên nghề (%)|OLD__SALARY__ALLOWANCE=>PC lương|OLD__SALARY__ADDITIONAL=>Các khoản bổ sung|OLD__SALARY__ALLOWANCE_FOR_RESERVED_DIFFERENCE=>Phụ cấp chênh lệch bảo lưu|NOW__SALARY__AMOUNT=>Tiền đồng|NOW__SALARY__COEFFICIENT=>Hệ số|NOW__SALARY__CV=>CV|NOW__SALARY__SENIORITY_VK=>Thâm niên VK (%)|NOW__SALARY__SENIORITY_JOB=>Thâm niên nghề (%)|NOW__SALARY__ALLOWANCE=>PC lương|NOW__SALARY__ADDITIONAL=>Các khoản bổ sung|NOW__SALARY__ALLOWANCE_FOR_RESERVED_DIFFERENCE=>Phụ cấp chênh lệch bảo lưu|CONTRACT_START_DATE=>Hiệu lực của HĐ/QĐ từ ngày <dd/mm/yyyy>|NOTE_CONTRACT_END_DATE=>Hiệu lực của HĐ/QĐ đến ngày (chỉ nhập trường hợp:  Bổ sung tăng nguyên lương (AD), Nghỉ đi làm lại (ON)) <dd/mm/yyyy>|NOTE_CONTRACT_PLAN=>Phương án|NOTE_CONTRACT_INCREMENT=>Số HĐ/QĐ Tăng|NOTE_CONTRACT_DESCRIPTION=> Diễn giải loại hợp đồng (3 tháng, 6 tháng, 1 năm, 3 năm, không thời hạn ...)|NOTE_CONTRACT_SIGN_DAY=>Ngày ký HĐ/ QĐ <dd/mm/yyyy>|NOTE_CONTRACT_RATE=>Tỷ lệ đóng (%)|NOTE_CONTRACT_OBJECT=>\"Đối tượng (nhập theo số bên dưới, VD: 4 cho trường hợp chỉ tham gia BHYT )\"&CHAR(10)&\"1: BHXH, BHYT, BHTN, BHTNLĐ, BNN\"&CHAR(10)&\"2: BHXH, BHYT, BHTNLĐ, BNN\"&CHAR(10)&\"3: BHXH, BHTNLĐ, BNN\"&CHAR(10)&\"4: BHYT\"&CHAR(10)&\"5: BHXH, BHTN, BHTNLĐ, BNN\"&CHAR(10)&\"6: BHTNLĐ, BNN\"|INSURANCE_BOOK_STATUS=>\"Tình trạng sổ BHXH (chỉ nhập trường hợp tăng mới (TM) hoặc tăng mới từ nơi khác chuyển đến (TD)), nhập một trong các số sau:\"&CHAR(10)&\"1: Chưa có sổ BHXH\"&CHAR(10)&\"2: Sổ đang sử dụng\"&CHAR(10)&\"3: Sổ bị thu hồi\"&CHAR(10)&\"4: Mất sổ\"|REQUEST_PAYMENT_FOR_INSURANCE=>Đề nghị đóng BHXH, BHTN, BHYT cho cả tháng  (đánh dấu X nếu có)|PLACE_REGISTRATION_MEDICAL_CARE__PROVINCE=>Mã tỉnh|PLACE_REGISTRATION_MEDICAL_CARE__HOSPITAL=>Mã bệnh viện (tra cứu trên phần mền)|NATIONALITY=>Quốc tịch (người Việt Nam không cần nhập, người nước ngoài tra cứu theo sheet QUOC_TICH)|RACE=>Mã dân tộc (xem sheet MA_DT)|CMND_PASSPORT=>Số CMND (người nước ngoài nhập số passport)|PLACE_BIRTH=>Nơi cấp giấy khai sinh (quê quán)|ADDRESS_HOUSEHOLD=>Địa chỉ đăng ký hộ khẩu|ADDRESS_LIVE=>Địa chỉ liên hệ (nơi sinh sống)|PHONE_NUMBER=>Số điện thoại liên hệ|EMAIL=>Email|GUARDIAN=>Cha/mẹ/ người giám hộ|OTHER_RELATIVE=>Thân nhân khác|HOUSEHOLD_INFO__CODE=>Mã hộ gia đình|HOUSEHOLD_INFO__FULLNAME=>Họ tên chủ hộ|HOUSEHOLD_INFO__PHONENUMBER=>Điện thoại|HOUSEHOLD_INFO__BOOK_NUMBER=>Số sổ hộ khẩu/ Số sổ tạm trú/..|HOUSEHOLD_INFO__DOCUMENT_TYPE=>Loại giấy tờ|HOUSEHOLD_INFO__VILLAGE=>Thôn/ Xóm|HOUSEHOLD_INFO__WARD=>Xã/phường|AREA_CODE=>Mã Vùng|DEPARTMENT=>Phòng ban|BANK_NUMBER=>Số tài khoản|BANK_NAME=>Ngân hàng"
+  },
+
+  // Base_Controller
+  {
+    "Localized_Key": "BASE_LANGUAGE",
+    "Localized_Value": "EN"
+  },
+  {
+    "Localized_Key": "BASE_INPUT_NOT_VALUE",
+    "Localized_Value": "The input was not valid"
+  },
+  {
+    "Localized_Key": "BASE_USER_AUTH_NOT_FOUND",
+    "Localized_Value": "User authen not found"
+  },
+  {
+    "Localized_Key": "BASE_USER_NOT_FOUND",
+    "Localized_Value": "User not found"
+  },
+  {
+    "Localized_Key": "BASE_USER_AUTH_NOT_REGISTRY_WITH_COMPANY",
+    "Localized_Value": "User not registry with this company"
+  },
+  {
+    "Localized_Key": "BASE_COMPANY_NOT_FOUND",
+    "Localized_Value": "Company not found"
+  },
+  {
+    "Localized_Key": "BASE_EMPLOYEE_NOT_FOUND",
+    "Localized_Value": "Employee not found"
+  },
+  {
+    "Localized_Key": "BASE_EXCEPTION",
+    "Localized_Value": "Exceptions appeared on the system. We will take care of it soon"
+  },
+  {
+    "Localized_Key": "BASE_REQUIRED_VALUE",
+    "Localized_Value": "Field can not blank"
+  },
+  {
+    "Localized_Key": "BASE_NO_DATA",
+    "Localized_Value": "No data"
+  },
+  {
+    "Localized_Key": "BASE_DATE_FORMAT_INCORRECT",
+    "Localized_Value": "Incorrect date format"
+  },
+  {
+    "Localized_Key": "BASE_MUST_NUMBER",
+    "Localized_Value": "Must be a number"
+  },
+  {
+    "Localized_Key": "BASE_MUST_NUMBER_POSITIVE",
+    "Localized_Value": "Must be a positive number"
+  },
+  {
+    "Localized_Key": "BASE_MUST_NUMBER_GREATER_0",
+    "Localized_Value": "Must be a number greater than 0"
+  },
+
+
+  // Auth_Controller
+  {
+    "Localized_Key": "AUTH_INVALID_TOKEN",
+    "Localized_Value": "Id_token is invalid"
+  },
+  {
+    "Localized_Key": "AUTH_NOT_GRANT_PERMISSION",
+    "Localized_Value": "Login google not grant permission profile scope email, profile"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_EMAIL",
+    "Localized_Value": "Email is invalid"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_FIRSTNAME",
+    "Localized_Value": "FirstName is invalid"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_LASTNAME",
+    "Localized_Value": "LastName is invalid"
+  },
+  {
+    "Localized_Key": "AUTH_EMAIL_REGISTERED_WEBSITE",
+    "Localized_Value": "The email was registered by account"
+  },
+  {
+    "Localized_Key": "AUTH_REGISTERED_FAILED",
+    "Localized_Value": "Registration failed"
+  },
+  {
+    "Localized_Key": "AUTH_EMAIL_REGISTERED_USER",
+    "Localized_Value": "Account is already used by orther user"
+  },
+  {
+    "Localized_Key": "AUTH_EMAIL_REGISTERED_EMPLOYER",
+    "Localized_Value": "Email is already used for employee"
+  },
+  {
+    "Localized_Key": "AUTH_PASS_FAILD_KMS",
+    "Localized_Value": "Password fail format KMS service"
+  },
+  {
+    "Localized_Key": "AUTH_PASS_FAILD_MD5",
+    "Localized_Value": "Password fail format md5"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_ATTEMPT",
+    "Localized_Value": "Invalid login attempt information"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_EMPLOYEE_DEMO",
+    "Localized_Value": "Invalid login with sample employee data"
+  },
+  {
+    "Localized_Key": "AUTH_EMAIL_NOT_SUPPORT_LOGIN",
+    "Localized_Value": "Email not support login on website"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_REQUIRED_2FA",
+    "Localized_Value": "User require login with 2FA"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_2FA_CODE",
+    "Localized_Value": "Verification Code2FA is invalid"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_LOCKED",
+    "Localized_Value": "User account locked out"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_INVALID",
+    "Localized_Value": "Invalid username or password"
+  },
+  {
+    "Localized_Key": "AUTH_TOKEN_NOT_FOUND",
+    "Localized_Value": "Refresh token not found"
+  },
+  {
+    "Localized_Key": "AUTH_TOKEN_EXPIRED",
+    "Localized_Value": "Refresh token is expired"
+  },
+  {
+    "Localized_Key": "AUTH_USER_NOT_FOUND",
+    "Localized_Value": "User not found"
+  },
+  {
+    "Localized_Key": "AUTH_USER_HAS_CONFIRMED_EMAIL",
+    "Localized_Value": "User has confirmed email"
+  },
+  {
+    "Localized_Key": "AUTH_CALLBACK_URL_NOT_FOUND",
+    "Localized_Value": "Callback url not found"
+  },
+  {
+    "Localized_Key": "AUTH_USER_CONFIRMED_EMAIL",
+    "Localized_Value": "User has confirmed email"
+  },
+  {
+    "Localized_Key": "AUTH_USER_CONFIRMED_INVALID_CODE",
+    "Localized_Value": "A code must be supplied for confirming your email"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_EMAIL_FORMAT",
+    "Localized_Value": "Invalid email format"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_PHONE_FORMAT",
+    "Localized_Value": "Invalid phone format"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_USERNAME_FORMAT",
+    "Localized_Value": "Invalid username format"
+  },
+  {
+    "Localized_Key": "AUTH_EMAIL_NOT_REGISTERED",
+    "Localized_Value": "Email is not registered"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_PROVIDER_1",
+    "Localized_Value": "This email registered by"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_PROVIDER_2",
+    "Localized_Value": "Please login with"
+  },
+  {
+    "Localized_Key": "AUTH_NOT_RECOVERY_PASS",
+    "Localized_Value": "Can not recovery password for user registry by Google"
+  },
+  {
+    "Localized_Key": "AUTH_CONFIRM_TOKEN_NOT_FOUND",
+    "Localized_Value": "Token not found or expiration"
+  },
+  {
+    "Localized_Key": "AUTH_ERROR_RESET_PASS",
+    "Localized_Value": "User can not reset password"
+  },
+  {
+    "Localized_Key": "AUTH_SUCCESS_RESET_PASS",
+    "Localized_Value": "You have successfully reset your password"
+  },
+  {
+    "Localized_Key": "AUTH_SUCCESS_CONFIRM",
+    "Localized_Value": "Thank you for confirming your email"
+  },
+
+  // Profile_Controller
+  {
+    "Localized_Key": "PRO_ERROR_UPDATE",
+    "Localized_Value": "Can not update profile"
+  },
+  {
+    "Localized_Key": "PRO_HAS_CONFIG_2FA",
+    "Localized_Value": "User has configured 2-step authentication"
+  },
+  {
+    "Localized_Key": "PRO_INVALID_CODE_2FA",
+    "Localized_Value": "Verification code is invalid"
+  },
+  {
+    "Localized_Key": "PRO_SUCCESS_VERIFY_2FA",
+    "Localized_Value": "User has enabled 2FA with an authenticator app"
+  },
+  {
+    "Localized_Key": "PRO_SUCCESS_REMOVE_2FA",
+    "Localized_Value": "Your authenticator app key has been reset, you will need to configure your authenticator app using the new key"
+  },
+  {
+    "Localized_Key": "PRO_INVALID_OLDPASS",
+    "Localized_Value": "Old password is invalid"
+  },
+  {
+    "Localized_Key": "PRO_OLDPASS_INCORRECT",
+    "Localized_Value": "Old password is incorrect"
+  },
+  {
+    "Localized_Key": "PRO_INVALID_NEWPASS",
+    "Localized_Value": "New password is invalid"
+  },
+  {
+    "Localized_Key": "PRO_NEWPASS_INCORRECT",
+    "Localized_Value": "New password at least 8 characters and at most 20 characters"
+  },
+  {
+    "Localized_Key": "PRO_ERROR_CHANGEPASS",
+    "Localized_Value": "Can not change password"
+  },
+
+  // Email
+  {
+    "Localized_Key": "EMAIL_SUBJECT_CONFIRM_EMAIL",
+    "Localized_Value": "Confirm your email address from payroll.vn"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_PASS_RECOVERY",
+    "Localized_Value": "Confirm password recovery from payroll.vn"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_VERIFY_EMPLOYEE",
+    "Localized_Value": "Confirm employee registration from payroll.vn"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_REGISTRATION_EMPLOYEE",
+    "Localized_Value": "Thank you for registration"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_CHANGE_PASS",
+    "Localized_Value": "Your account has just changed the password"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_PAYROLL_1",
+    "Localized_Value": "Pay period from"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_PAYROLL_2",
+    "Localized_Value": "Payment Date"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_INVITE_EMPLOYEE_1",
+    "Localized_Value": "has invited you to access their Payroll account"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_INVITE_EMPLOYEE_2",
+    "Localized_Value": "You have received this email from Payroll as"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_INVITE_EMPLOYEE_3",
+    "Localized_Value": "has invited you to access their Payroll account."
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_1",
+    "Localized_Value": "View our web payroll"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_2",
+    "Localized_Value": "if this email isn't displaying well."
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_3",
+    "Localized_Value": "Welcome To Payroll"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_4",
+    "Localized_Value": "Link Application"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_6",
+    "Localized_Value": "The Payroll Platform:"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_7",
+    "Localized_Value": "Employee management<br>Timekeeping<br>Payroll calculation<br>Tax finalization<br>Financial statement<br>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_8",
+    "Localized_Value": "You need to contact us ?"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_9",
+    "Localized_Value": "For more information, you can login to the website"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_11",
+    "Localized_Value": "Payroll<br>The Payroll Team<br>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_12",
+    "Localized_Value": "Thank you for signing up to use Payroll. Once you click on the link below, your account will become active. You will be redirected to enter your username and password once again.<br><strong>Please note that your username is your email address and the password is the one you set at signup.</strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_13",
+    "Localized_Value": "Confirm email"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_14",
+    "Localized_Value": "Thank you for use Payroll. Once you click on the link below, you can recover your password. You will be redirected to enter your new password once again.<br><strong>Please note that you should not give out a password to anyone</strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_15",
+    "Localized_Value": "Recovery Password"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_16",
+    "Localized_Value": "Thank you for signing up to use Payroll. Once you click on the link below, your account will be activated.<br><strong>Please note that your username is your email address and the password will be sent about email when you activate successfully.</strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_17",
+    "Localized_Value": "Verify email"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_18",
+    "Localized_Value": "Your Payroll for period"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_19",
+    "Localized_Value": "can be viewed, printed or download as pdf from the attachment below."
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_20",
+    "Localized_Value": "Payroll, Thanks you !"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_21",
+    "Localized_Value": "<strong>If you already have an account, please login at<br></strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_22",
+    "Localized_Value": "<strong>If you don't have an account, please sign up at<br></strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_23",
+    "Localized_Value": "Login Now"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_24",
+    "Localized_Value": "Registry Now"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_25",
+    "Localized_Value": "Dear"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_26",
+    "Localized_Value": "Note: the password attached is"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_27",
+    "Localized_Value": "Someone just logged in and changed your password. We send you this email to make sure the person is you."
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_28",
+    "Localized_Value": "Check operation"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_29",
+    "Localized_Value": "Thank you for signing up to use Payroll. <br> <strong>Your default password is: </strong> "
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_30",
+    "Localized_Value": "Login now"
+  },
+
+  // Address_Controller
+  {
+    "Localized_Key": "ADDRESS_NOTFOUND",
+    "Localized_Value": "Address not found"
+  },
+
+  // Hospital_Controller
+
+  // Doctor_Controller
+  {
+    "Localized_Key": "DOCTOR_NOTFOUND",
+    "Localized_Value": "Doctor not found"
+  },
+
+  // Medical_Appointment_Controller
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_DOCTOR",
+    "Localized_Value": "DoctorId is required"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_HOSPITAL",
+    "Localized_Value": "HospitalId is required"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_AĐRESS",
+    "Localized_Value": "AddressId is required"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_DESCRIPTION",
+    "Localized_Value": "DescriptionOfSymptoms is required"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_SPECIAL_LIST",
+    "Localized_Value": "Specialist is required"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_DATE",
+    "Localized_Value": "Date is required"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_TIME",
+    "Localized_Value": "Time is required"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_NOT_FOUND",
+    "Localized_Value": "MedicalAppointmentId not found"
+  },
+
+  // Health_Controller
+  {
+    "Localized_Key": "HEALTH_NOTFOUND",
+    "Localized_Value": "HealthId not found"
+  },
+
+  // Info_Controller
+  {
+    "Localized_Key": "INFO_NOTFOUND",
+    "Localized_Value": "InfoId not found"
+  },
+
+  // Notification_Controller
+  {
+    "Localized_Key": "NOTI_NOTFOUND",
+    "Localized_Value": "NotificationId not found"
+  },
+
+  // News_Controller
+  {
+    "Localized_Key": "NEWS_NOTFOUND",
+    "Localized_Value": "NewsId not found"
+  },
+
+  // AWS_Controller
+  {
+    "Localized_Key": "AWS_IMAGE_EMPTY",
+    "Localized_Value": "Couldn't find the file to upload"
+  },
+  {
+    "Localized_Key": "AWS_GROUPID_EMPTY",
+    "Localized_Value": "Couldn't find groupid"
+  },
+
+  // PaymentController
+  {
+    "Localized_Key": "PAYMENT_SUCCESS",
+    "Localized_Value": "Payment success"
+  },
+  {
+    "Localized_Key": "PAYMENT_FAILED",
+    "Localized_Value": "Payment failed"
+  },
+  {
+    "Localized_Key": "PAYMENT_NOTFOUND",
+    "Localized_Value": "Payment not found"
+  },
+  {
+    "Localized_Key": "PAYMENT_NOT_COMPLETED",
+    "Localized_Value": "Payment not completed"
+  },
+
+  // PromotionController
+  {
+    "Localized_Key": "PROMOTION_NOTFOUND",
+    "Localized_Value": "No shipping promotion found"
+  },
+  {
+    "Localized_Key": "PROMOTION_EXPIRED",
+    "Localized_Value": "The discount promotion has expired"
+  },
+
+  // TransportPromotionController
+  {
+    "Localized_Key": "PROMOTION_TRANSPORT_NOTFOUND",
+    "Localized_Value": "No shipping transport promotion found"
+  },
+  {
+    "Localized_Key": "PROMOTION_TRANSPORT_EXPIRED",
+    "Localized_Value": "The discount transport promotion has expired"
+  },
+
+  // ProductController
+  {
+    "Localized_Key": "PRODUCT_NOTFOUND",
+    "Localized_Value": "No products found"
+  },
+  {
+    "Localized_Key": "PRODUCT_ADDRESS_NOTEXITS",
+    "Localized_Value": "AccountAddress not exits"
+  },
+  {
+    "Localized_Key": "PRODUCT_LIST_PRODUCT_NOTEXITS",
+    "Localized_Value": "ListProduct not found"
+  },
+  {
+    "Localized_Key": "PRODUCT_NOTFOUND_QUALITY_EMPTY",
+    "Localized_Value": "Product not exits or Quantity is empty"
+  },
+  {
+    "Localized_Key": "PRODUCT_ACCOUNT_NAME_EMPTY",
+    "Localized_Value": "AccountName is empty"
+  },
+  {
+    "Localized_Key": "PRODUCT_DRAFTORDERID_NOTEXITS",
+    "Localized_Value": "DraftOrderId not exits"
+  },
+
+  // OrderController
+  {
+    "Localized_Key": "ORDER_NOTFOUND",
+    "Localized_Value": "Order not found"
+  },
+  {
+    "Localized_Key": "AMOUNT_NOT_MATCH",
+    "Localized_Value": "AMOUNT is not match"
+  },
+  {
+    "Localized_Key": "DRAFT_ORDER_NOT_IN_ACCOUNT",
+    "Localized_Value": "Draft order is not match with account"
+  },
+  {
+    "Localized_Key": "TYPE_PAY_NOT_MATCH",
+    "Localized_Value": "Type pay not map with order"
+  },
+  {
+    "Localized_Key": "TYPE_PAY_NOT_MATCH_PROMOTION",
+    "Localized_Value": "Type pay not map with promotion"
+  },
+  {
+    "Localized_Key": "ORDER_IS_SUCCESSED",
+    "Localized_Value": "Order is successed cant update"
+  },
+
+  // ShopController
+  {
+    "Localized_Key": "SHOP_NOTFOUND",
+    "Localized_Value": "Shop not found"
+  }
+
+]

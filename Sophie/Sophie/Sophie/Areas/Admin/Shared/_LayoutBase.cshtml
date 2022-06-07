@@ -1,0 +1,42 @@
+﻿@namespace Sophie.Areas.Admin.Shared
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>@ViewData["Title"]</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/lib/plugins/fontawesome-free/css/all.min.css">
+    <!-- IonIcons -->
+    @*<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">*@
+    <link rel="stylesheet" href="~/lib/plugins/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- jQuery UI 1.12.1 -->
+    <link rel="stylesheet" href="~/lib/plugins/jquery-ui/jquery-ui.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/lib/plugins/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    @RenderSection("Styles", required: false)
+</head>
+
+<body>
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <!-- REQUIRED SCRIPTS -->
+    <script src="~/lib/plugins/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

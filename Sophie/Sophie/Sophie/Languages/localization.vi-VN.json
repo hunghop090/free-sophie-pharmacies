@@ -1,0 +1,599 @@
+﻿[
+  // REPORT EXCEL
+  {
+    "Localized_Key": "EXCEL_REPORT_GLOBAL_TITLE",
+    "Localized_Value": "LEFT_TITLE=>Nhập thông  tin cho Mẫu số: D02-TS|RIGHT_TITLE=>Nhập thông  tin cho Mẫu số: TK1-TS"
+  },
+  {
+    "Localized_Key": "EXCEL_REPORT_TITLE",
+    "Localized_Value": "OLD_SALARY=>\"Mức đóng cũ\"&CHAR(10)&\"(Chỉ nhập trường hợp điều chỉnh mức đóng (DC))\"|NOW_SALARY=>Tiền lương|NOTE=>Ghi chú|PLACE_REGISTRATION_MEDICAL_CARE=>Nơi đăng ký KCB ban đầu (mã số)|HOUSEHOLD_INFO=>Thông tin chủ hộ (chỉ nhập đối với trường hợp không có sổ BHXH)"
+  },
+  {
+    "Localized_Key": "EXCEL_REPORT_SUB1",
+    "Localized_Value": ""
+  },
+  {
+    "Localized_Key": "EXCEL_REPORT_COLUMN",
+    "Localized_Value": "FULL_NAME=>Họ và tên|INSURANCE_NUMBER=>Số định danh (Mã số BHXH)|INSURANCE_BOOK_NUMBER=>Số sổ BHXH|BIRTH_DAY=>Ngày, tháng, năm sinh (<dd/mm/yyyy> hoặc <yyyy>)|GENDER=>Nữ (X)|INFO_EMPLOYEE=>Cấp bậc, chức vụ, chức danh nghề, nơi làm việc|OLD__SALARY__AMOUNT=>Tiền đồng|OLD__SALARY__COEFFICIENT=>Hệ số|OLD__SALARY__CV=>CV|OLD__SALARY__SENIORITY_VK=>Thâm niên VK (%)|OLD__SALARY__SENIORITY_JOB=>Thâm niên nghề (%)|OLD__SALARY__ALLOWANCE=>PC lương|OLD__SALARY__ADDITIONAL=>Các khoản bổ sung|OLD__SALARY__ALLOWANCE_FOR_RESERVED_DIFFERENCE=>Phụ cấp chênh lệch bảo lưu|NOW__SALARY__AMOUNT=>Tiền đồng|NOW__SALARY__COEFFICIENT=>Hệ số|NOW__SALARY__CV=>CV|NOW__SALARY__SENIORITY_VK=>Thâm niên VK (%)|NOW__SALARY__SENIORITY_JOB=>Thâm niên nghề (%)|NOW__SALARY__ALLOWANCE=>PC lương|NOW__SALARY__ADDITIONAL=>Các khoản bổ sung|NOW__SALARY__ALLOWANCE_FOR_RESERVED_DIFFERENCE=>Phụ cấp chênh lệch bảo lưu|CONTRACT_START_DATE=>Hiệu lực của HĐ/QĐ từ ngày <dd/mm/yyyy>|NOTE_CONTRACT_END_DATE=>Hiệu lực của HĐ/QĐ đến ngày (chỉ nhập trường hợp:  Bổ sung tăng nguyên lương (AD), Nghỉ đi làm lại (ON)) <dd/mm/yyyy>|NOTE_CONTRACT_PLAN=>Phương án|NOTE_CONTRACT_INCREMENT=>Số HĐ/QĐ Tăng|NOTE_CONTRACT_DESCRIPTION=> Diễn giải loại hợp đồng (3 tháng, 6 tháng, 1 năm, 3 năm, không thời hạn ...)|NOTE_CONTRACT_SIGN_DAY=>Ngày ký HĐ/ QĐ <dd/mm/yyyy>|NOTE_CONTRACT_RATE=>Tỷ lệ đóng (%)|NOTE_CONTRACT_OBJECT=>\"Đối tượng (nhập theo số bên dưới, VD: 4 cho trường hợp chỉ tham gia BHYT )\"&CHAR(10)&\"1: BHXH, BHYT, BHTN, BHTNLĐ, BNN\"&CHAR(10)&\"2: BHXH, BHYT, BHTNLĐ, BNN\"&CHAR(10)&\"3: BHXH, BHTNLĐ, BNN\"&CHAR(10)&\"4: BHYT\"&CHAR(10)&\"5: BHXH, BHTN, BHTNLĐ, BNN\"&CHAR(10)&\"6: BHTNLĐ, BNN\"|INSURANCE_BOOK_STATUS=>\"Tình trạng sổ BHXH (chỉ nhập trường hợp tăng mới (TM) hoặc tăng mới từ nơi khác chuyển đến (TD)), nhập một trong các số sau:\"&CHAR(10)&\"1: Chưa có sổ BHXH\"&CHAR(10)&\"2: Sổ đang sử dụng\"&CHAR(10)&\"3: Sổ bị thu hồi\"&CHAR(10)&\"4: Mất sổ\"|REQUEST_PAYMENT_FOR_INSURANCE=>Đề nghị đóng BHXH, BHTN, BHYT cho cả tháng  (đánh dấu X nếu có)|PLACE_REGISTRATION_MEDICAL_CARE__PROVINCE=>Mã tỉnh|PLACE_REGISTRATION_MEDICAL_CARE__HOSPITAL=>Mã bệnh viện (tra cứu trên phần mền)|NATIONALITY=>Quốc tịch (người Việt Nam không cần nhập, người nước ngoài tra cứu theo sheet QUOC_TICH)|RACE=>Mã dân tộc (xem sheet MA_DT)|CMND_PASSPORT=>Số CMND (người nước ngoài nhập số passport)|PLACE_BIRTH=>Nơi cấp giấy khai sinh (quê quán)|ADDRESS_HOUSEHOLD=>Địa chỉ đăng ký hộ khẩu|ADDRESS_LIVE=>Địa chỉ liên hệ (nơi sinh sống)|PHONE_NUMBER=>Số điện thoại liên hệ|EMAIL=>Email|GUARDIAN=>Cha/mẹ/ người giám hộ|OTHER_RELATIVE=>Thân nhân khác|HOUSEHOLD_INFO__CODE=>Mã hộ gia đình|HOUSEHOLD_INFO__FULLNAME=>Họ tên chủ hộ|HOUSEHOLD_INFO__PHONENUMBER=>Điện thoại|HOUSEHOLD_INFO__BOOK_NUMBER=>Số sổ hộ khẩu/ Số sổ tạm trú/..|HOUSEHOLD_INFO__DOCUMENT_TYPE=>Loại giấy tờ|HOUSEHOLD_INFO__VILLAGE=>Thôn/ Xóm|HOUSEHOLD_INFO__WARD=>Xã/phường|AREA_CODE=>Mã Vùng|DEPARTMENT=>Phòng ban|BANK_NUMBER=>Số tài khoản|BANK_NAME=>Ngân hàng"
+  },
+
+  // Base_Controller
+  {
+    "Localized_Key": "BASE_LANGUAGE",
+    "Localized_Value": "VI"
+  },
+  {
+    "Localized_Key": "BASE_INPUT_NOT_VALUE",
+    "Localized_Value": "Dữ liệu đầu vào không hợp lệ"
+  },
+  {
+    "Localized_Key": "BASE_USER_AUTH_NOT_FOUND",
+    "Localized_Value": "Không tìm thấy xác thực người dùng"
+  },
+  {
+    "Localized_Key": "BASE_USER_NOT_FOUND",
+    "Localized_Value": "Không tìm thấy người dùng"
+  },
+  {
+    "Localized_Key": "BASE_USER_AUTH_NOT_REGISTRY_WITH_COMPANY",
+    "Localized_Value": "Người dùng không đăng ký với công ty này"
+  },
+  {
+    "Localized_Key": "BASE_COMPANY_NOT_FOUND",
+    "Localized_Value": "Không tìm thấy công ty"
+  },
+  {
+    "Localized_Key": "BASE_EMPLOYEE_NOT_FOUND",
+    "Localized_Value": "Không tìm thấy nhân viên"
+  },
+  {
+    "Localized_Key": "BASE_EXCEPTION",
+    "Localized_Value": "Đã xuất hiện ngoại lệ trên hệ thống. Chúng tôi sẽ sớm xử lý vấn đề này"
+  },
+  {
+    "Localized_Key": "BASE_REQUIRED_VALUE",
+    "Localized_Value": "Trường không được để trống"
+  },
+  {
+    "Localized_Key": "BASE_NO_DATA",
+    "Localized_Value": "Không có dữ liệu"
+  },
+  {
+    "Localized_Key": "BASE_DATE_FORMAT_INCORRECT",
+    "Localized_Value": "Định dạng ngày không chính xác"
+  },
+  {
+    "Localized_Key": "BASE_MUST_NUMBER",
+    "Localized_Value": "Phải là một số"
+  },
+  {
+    "Localized_Key": "BASE_MUST_NUMBER_POSITIVE",
+    "Localized_Value": "Phải là một số dương"
+  },
+  {
+    "Localized_Key": "BASE_MUST_NUMBER_GREATER_0",
+    "Localized_Value": "Phải là một số lớn hơn 0"
+  },
+
+
+  // Auth_Controller
+  {
+    "Localized_Key": "AUTH_INVALID_TOKEN",
+    "Localized_Value": "Id_token không hợp lệ"
+  },
+  {
+    "Localized_Key": "AUTH_NOT_GRANT_PERMISSION",
+    "Localized_Value": "Đăng nhập google không cấp quyền cho email, hồ sơ phạm vi"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_EMAIL",
+    "Localized_Value": "Email không hợp lệ"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_FIRSTNAME",
+    "Localized_Value": "FirstName không hợp lệ"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_LASTNAME",
+    "Localized_Value": "LastName không hợp lệ"
+  },
+  {
+    "Localized_Key": "AUTH_EMAIL_REGISTERED_WEBSITE",
+    "Localized_Value": "Email đã được đăng ký bằng tài khoản"
+  },
+  {
+    "Localized_Key": "AUTH_REGISTERED_FAILED",
+    "Localized_Value": "Đăng ký không thành công"
+  },
+  {
+    "Localized_Key": "AUTH_EMAIL_REGISTERED_USER",
+    "Localized_Value": "Tài khoản đã được sử dụng bởi người dùng khác"
+  },
+  {
+    "Localized_Key": "AUTH_EMAIL_REGISTERED_EMPLOYER",
+    "Localized_Value": "Email đã được sử dụng cho nhân viên"
+  },
+  {
+    "Localized_Key": "AUTH_PASS_FAILD_KMS",
+    "Localized_Value": "Dịch vụ KMS không định dạng được mật khẩu"
+  },
+  {
+    "Localized_Key": "AUTH_PASS_FAILD_MD5",
+    "Localized_Value": "Định dạng không thành công mật khẩu md5"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_ATTEMPT",
+    "Localized_Value": "Thông tin đăng nhập không hợp lệ"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_EMPLOYEE_DEMO",
+    "Localized_Value": "Đăng nhập không hợp lệ với dữ liệu nhân viên mẫu"
+  },
+  {
+    "Localized_Key": "AUTH_EMAIL_NOT_SUPPORT_LOGIN",
+    "Localized_Value": "Email không hỗ trợ đăng nhập trên trang web"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_REQUIRED_2FA",
+    "Localized_Value": "Người dùng yêu cầu đăng nhập bằng 2FA"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_2FA_CODE",
+    "Localized_Value": "Mã xác minh2FA không hợp lệ"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_LOCKED",
+    "Localized_Value": "Tài khoản người dùng bị khóa"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_INVALID",
+    "Localized_Value": "Tên người dùng hoặc mật khẩu không hợp lệ"
+  },
+  {
+    "Localized_Key": "AUTH_TOKEN_NOT_FOUND",
+    "Localized_Value": "Không tìm thấy mã thông báo làm mới"
+  },
+  {
+    "Localized_Key": "AUTH_TOKEN_EXPIRED",
+    "Localized_Value": "Làm mới mã thông báo đã hết hạn"
+  },
+  {
+    "Localized_Key": "AUTH_USER_NOT_FOUND",
+    "Localized_Value": "Không tìm thấy người dùng"
+  },
+  {
+    "Localized_Key": "AUTH_USER_HAS_CONFIRMED_EMAIL",
+    "Localized_Value": "Người dùng đã xác nhận email"
+  },
+  {
+    "Localized_Key": "AUTH_CALLBACK_URL_NOT_FOUND",
+    "Localized_Value": "Không tìm thấy url gọi lại"
+  },
+  {
+    "Localized_Key": "AUTH_USER_CONFIRMED_EMAIL",
+    "Localized_Value": "Người dùng đã xác nhận email"
+  },
+  {
+    "Localized_Key": "AUTH_USER_CONFIRMED_INVALID_CODE",
+    "Localized_Value": "Mã phải được cung cấp để xác nhận email của bạn"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_EMAIL_FORMAT",
+    "Localized_Value": "Định dạng email không hợp lệ"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_PHONE_FORMAT",
+    "Localized_Value": "Định dạng phone không hợp lệ"
+  },
+  {
+    "Localized_Key": "AUTH_INVALID_USERNAME_FORMAT",
+    "Localized_Value": "Định dạng tên đăng nhập không hợp lệ"
+  },
+  {
+    "Localized_Key": "AUTH_EMAIL_NOT_REGISTERED",
+    "Localized_Value": "Email chưa được đăng ký"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_PROVIDER_1",
+    "Localized_Value": "Email này được đăng ký bởi"
+  },
+  {
+    "Localized_Key": "AUTH_LOGIN_PROVIDER_2",
+    "Localized_Value": "Vui lòng đăng nhập bằng"
+  },
+  {
+    "Localized_Key": "AUTH_NOT_RECOVERY_PASS",
+    "Localized_Value": "Không thể khôi phục mật khẩu cho đăng ký người dùng của Google"
+  },
+  {
+    "Localized_Key": "AUTH_CONFIRM_TOKEN_NOT_FOUND",
+    "Localized_Value": "Không tìm thấy mã thông báo hoặc hết hạn"
+  },
+  {
+    "Localized_Key": "AUTH_ERROR_RESET_PASS",
+    "Localized_Value": "Người dùng không thể đặt lại mật khẩu"
+  },
+  {
+    "Localized_Key": "AUTH_SUCCESS_RESET_PASS",
+    "Localized_Value": "Bạn đã đặt lại thành công mật khẩu của bạn"
+  },
+  {
+    "Localized_Key": "AUTH_SUCCESS_CONFIRM",
+    "Localized_Value": "Cảm ơn bạn đã xác nhận email của mình"
+  },
+
+  // Profile_Controller
+  {
+    "Localized_Key": "PRO_ERROR_UPDATE",
+    "Localized_Value": "Không thể cập nhật hồ sơ"
+  },
+  {
+    "Localized_Key": "PRO_HAS_CONFIG_2FA",
+    "Localized_Value": "Người dùng đã định cấu hình xác thực 2 bước"
+  },
+  {
+    "Localized_Key": "PRO_INVALID_CODE_2FA",
+    "Localized_Value": "Mã xác minh không hợp lệ"
+  },
+  {
+    "Localized_Key": "PRO_SUCCESS_VERIFY_2FA",
+    "Localized_Value": "Người dùng đã bật 2FA bằng ứng dụng xác thực"
+  },
+  {
+    "Localized_Key": "PRO_SUCCESS_REMOVE_2FA",
+    "Localized_Value": "Khóa ứng dụng trình xác thực của bạn đã được đặt lại, bạn sẽ cần định cấu hình ứng dụng trình xác thực của mình bằng khóa mới"
+  },
+  {
+    "Localized_Key": "PRO_INVALID_OLDPASS",
+    "Localized_Value": "Mật khẩu cũ không hợp lệ"
+  },
+  {
+    "Localized_Key": "PRO_OLDPASS_INCORRECT",
+    "Localized_Value": "Mật khẩu cũ không chính xác"
+  },
+  {
+    "Localized_Key": "PRO_INVALID_NEWPASS",
+    "Localized_Value": "Mật khẩu mới không hợp lệ"
+  },
+  {
+    "Localized_Key": "PRO_NEWPASS_INCORRECT",
+    "Localized_Value": "Mật khẩu mới ít nhất 8 ký tự và nhiều nhất 20 ký tự"
+  },
+  {
+    "Localized_Key": "PRO_ERROR_CHANGEPASS",
+    "Localized_Value": "Không thể thay đổi mật khẩu"
+  },
+
+  // Email
+  {
+    "Localized_Key": "EMAIL_SUBJECT_CONFIRM_EMAIL",
+    "Localized_Value": "Xác nhận đăng ký tài khoản từ payroll.vn"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_PASS_RECOVERY",
+    "Localized_Value": "Xác nhận khôi phục mật khẩu từ payroll.vn"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_VERIFY_EMPLOYEE",
+    "Localized_Value": "Xác nhận đăng ký nhân viên từ payroll.vn"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_REGISTRATION_EMPLOYEE",
+    "Localized_Value": "Cảm ơn bạn đã đăng ký"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_CHANGE_PASS",
+    "Localized_Value": "Tài khoản của bạn vừa thay đổi mật khẩu"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_PAYROLL_1",
+    "Localized_Value": "Bảng lương từ"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_PAYROLL_2",
+    "Localized_Value": "Ngày thanh toán"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_INVITE_EMPLOYEE_1",
+    "Localized_Value": "đã mời bạn truy cập tài khoản Payroll của họ."
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_INVITE_EMPLOYEE_2",
+    "Localized_Value": "Bạn đã nhận được email này từ Payroll với tư cách là"
+  },
+  {
+    "Localized_Key": "EMAIL_SUBJECT_INVITE_EMPLOYEE_3",
+    "Localized_Value": "đã mời bạn truy cập tài khoản Payroll của họ."
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_1",
+    "Localized_Value": "Xem trang chủ của chúng tôi"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_2",
+    "Localized_Value": "nếu email này không hiển thị tốt."
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_3",
+    "Localized_Value": "Chào mừng đến với Payroll"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_4",
+    "Localized_Value": "Liên kết ứng dụng"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_6",
+    "Localized_Value": "Nền tảng Payroll:"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_7",
+    "Localized_Value": "Quản lý nhân viên<br>Chấm công<br>Tính lương<br>Quyết toán thuế<br>Báo cáo tài chính<br>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_8",
+    "Localized_Value": "Bạn cần liên hệ với chúng tôi?"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_9",
+    "Localized_Value": "Để biết thêm thông tin, bạn có thể đăng nhập vào trang web"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_11",
+    "Localized_Value": "Payroll<br>Đội ngũ Payroll<br>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_12",
+    "Localized_Value": "Cảm ơn bạn đã đăng ký sử dụng Payroll. Khi bạn nhấp vào liên kết bên dưới, tài khoản của bạn sẽ được kích hoạt. Bạn sẽ được chuyển hướng để nhập tên người dùng và mật khẩu của mình một lần nữa.<br><strong>Xin lưu ý rằng tên người dùng của bạn là địa chỉ email của bạn và mật khẩu là mật khẩu bạn đã sử dụng khi đăng ký.</strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_13",
+    "Localized_Value": "Xác nhận email"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_14",
+    "Localized_Value": "Cảm ơn bạn đã sử dụng Payroll. Sau khi nhấp vào liên kết bên dưới, bạn có thể khôi phục mật khẩu của mình. Bạn sẽ được chuyển hướng để nhập mật khẩu mới của mình một lần nữa.<br><strong>Xin lưu ý rằng bạn không nên cung cấp mật khẩu cho bất kỳ ai</strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_15",
+    "Localized_Value": "Khôi phục mật khẩu"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_16",
+    "Localized_Value": "Cảm ơn bạn đã đăng ký sử dụng Payroll. Khi bạn nhấp vào liên kết bên dưới, tài khoản của bạn sẽ được kích hoạt.<br><strong>Xin lưu ý rằng tên người dùng của bạn là địa chỉ email của bạn và mật khẩu sẽ được gửi về email khi bạn kích hoạt thành công.</strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_17",
+    "Localized_Value": "Xác nhận Email"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_18",
+    "Localized_Value": "Bảng lương của bạn từ "
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_19",
+    "Localized_Value": "có thể được xem, in hoặc tải xuống dưới dạng pdf từ tệp đính kèm bên dưới."
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_20",
+    "Localized_Value": "Payroll, Xin cảm ơn !"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_21",
+    "Localized_Value": "<strong>Nếu bạn đã có tài khoản, vui lòng đăng nhập tại<br></strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_22",
+    "Localized_Value": "<strong>Nếu bạn chưa có tài khoản, vui lòng đăng ký tại<br></strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_23",
+    "Localized_Value": "Đăng nhập ngay"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_24",
+    "Localized_Value": "Đăng ký ngay"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_25",
+    "Localized_Value": "Chào"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_26",
+    "Localized_Value": "Lưu ý: mật khẩu đính kèm là"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_27",
+    "Localized_Value": "Ai đó vừa đăng nhập và thay đổi mật khẩu của bạn. Chúng tôi gửi cho bạn email này để đảm bảo rằng người đó chính là bạn."
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_28",
+    "Localized_Value": "Kiểm tra hoạt động"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_29",
+    "Localized_Value": "Cảm ơn bạn đã đăng ký sử dụng Payroll. <br> <strong>Mật khẩu mặc định của bạn là: </strong>"
+  },
+  {
+    "Localized_Key": "EMAIL_TEXT_30",
+    "Localized_Value": "Đăng nhập ngay"
+  },
+
+  // Address_Controller
+  {
+    "Localized_Key": "ADDRESS_NOTFOUND",
+    "Localized_Value": "Địa chỉ không tìm thấy"
+  },
+
+  // Hospital_Controller
+
+  // Doctor_Controller
+  {
+    "Localized_Key": "DOCTOR_NOTFOUND",
+    "Localized_Value": "Bác sĩ không tìm thấy"
+  },
+
+  // Medical_Appointment_Controller
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_DOCTOR",
+    "Localized_Value": "DoctorId là bắt buộc"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_HOSPITAL",
+    "Localized_Value": "HospitalId là bắt buộc"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_AĐRESS",
+    "Localized_Value": "AddressId là bắt buộc"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_DESCRIPTION",
+    "Localized_Value": "DescriptionOfSymptoms là bắt buộc"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_SPECIAL_LIST",
+    "Localized_Value": "Chuyên khoa là bắt buộc"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_DATE",
+    "Localized_Value": "Ngày tháng là bắt buộc"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_INVALID_TIME",
+    "Localized_Value": "Thời gian là bắt buộc"
+  },
+  {
+    "Localized_Key": "MEDICAL_APPOINTMENT_NOT_FOUND",
+    "Localized_Value": "MedicalAppointmentId không tìm thấy"
+  },
+
+
+  // Health_Controller
+  {
+    "Localized_Key": "HEALTH_NOTFOUND",
+    "Localized_Value": "HealthId không tìm thấy"
+  },
+
+  // Info_Controller
+  {
+    "Localized_Key": "INFO_NOTFOUND",
+    "Localized_Value": "InfoId không tìm thấy"
+  },
+
+  // Notification_Controller
+  {
+    "Localized_Key": "NOTI_NOTFOUND",
+    "Localized_Value": "NotificationId không tìm thấy"
+  },
+
+  // News_Controller
+  {
+    "Localized_Key": "NEWS_NOTFOUND",
+    "Localized_Value": "NewsId không tìm thấy"
+  },
+
+  // AWS_Controller
+  {
+    "Localized_Key": "AWS_IMAGE_EMPTY",
+    "Localized_Value": "Không tìm thấy tập tin cần tải lên"
+  },
+  {
+    "Localized_Key": "AWS_GROUPID_EMPTY",
+    "Localized_Value": "Không tìm thấy groupid"
+  },
+
+  // PaymentController
+  {
+    "Localized_Key": "PAYMENT_SUCCESS",
+    "Localized_Value": "Thanh toán thành công"
+  },
+  {
+    "Localized_Key": "PAYMENT_FAILED",
+    "Localized_Value": "Thanh toán thất bại"
+  },
+  {
+    "Localized_Key": "PAYMENT_NOTFOUND",
+    "Localized_Value": "Payment không tìm thấy"
+  },
+  {
+    "Localized_Key": "PAYMENT_NOT_COMPLETED",
+    "Localized_Value": "Payment chưa hoàn tất"
+  },
+
+  // PromotionController
+  {
+    "Localized_Key": "PROMOTION_NOTFOUND",
+    "Localized_Value": "Không tìm thấy chương trình khuyến mãi giảm giá"
+  },
+  {
+    "Localized_Key": "PROMOTION_EXPIRED",
+    "Localized_Value": "Chương trình khuyến mãi giảm giá đã quá hạn"
+  },
+
+  // TransportPromotionController
+  {
+    "Localized_Key": "PROMOTION_TRANSPORT_NOTFOUND",
+    "Localized_Value": "Không tìm thấy chương trình khuyến mãi giảm giá"
+  },
+  {
+    "Localized_Key": "PROMOTION_TRANSPORT_EXPIRED",
+    "Localized_Value": "Chương trình khuyến mãi giảm giá đã quá hạn"
+  },
+
+  // ProductController
+  {
+    "Localized_Key": "PRODUCT_NOTFOUND",
+    "Localized_Value": "Không tìm thấy sản phẩm"
+  },
+  {
+    "Localized_Key": "PRODUCT_ADDRESS_NOTEXITS",
+    "Localized_Value": "AccountAddress không hợp lệ"
+  },
+  {
+    "Localized_Key": "PRODUCT_LIST_PRODUCT_NOTEXITS",
+    "Localized_Value": "ListProduct không hợp lệ"
+  },
+  {
+    "Localized_Key": "PRODUCT_NOTFOUND_QUALITY_EMPTY",
+    "Localized_Value": "Sản phẩm không tồn tại hoặc số lượng không hợp lệ"
+  },
+  {
+    "Localized_Key": "PRODUCT_ACCOUNT_NAME_EMPTY",
+    "Localized_Value": "AccountName trống"
+  },
+  {
+    "Localized_Key": "PRODUCT_DRAFTORDERID_NOTEXITS",
+    "Localized_Value": "DraftOrderId không tồn tại"
+  },
+
+  // OrderController
+  {
+    "Localized_Key": "ORDER_NOTFOUND",
+    "Localized_Value": "Không tìm thấy đơn hàng"
+  },
+  {
+    "Localized_Key": "AMOUNT_NOT_MATCH",
+    "Localized_Value": "Số tiền không hợp lệ"
+  },
+  {
+    "Localized_Key": "DRAFT_ORDER_NOT_IN_ACCOUNT",
+    "Localized_Value": "Đơn hàng này không thuộc về khách hàng hoặc không phải đơn hàng hiện tại"
+  },
+  {
+    "Localized_Key": "TYPE_PAY_NOT_MATCH",
+    "Localized_Value": "Đơn hàng này không thanh toán đúng theo phương thức đã chọn"
+  },
+  {
+    "Localized_Key": "TYPE_PAY_NOT_MATCH_PROMOTION",
+    "Localized_Value": "Chương trình khuyến mãi không áp dụng cho phương thức thanh toán này"
+  },
+  {
+    "Localized_Key": "ORDER_IS_SUCCESSED",
+    "Localized_Value": "Đơn hàng đã thành công không thể cập nhật"
+  },
+
+  // ShopController
+  {
+    "Localized_Key": "SHOP_NOTFOUND",
+    "Localized_Value": "Không tìm thấy đơn hàng"
+  }
+]

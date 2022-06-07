@@ -1,0 +1,40 @@
+﻿@namespace Sophie.Areas.Admin.Shared
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Identity
+@using App.Core.Entities
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+}
+else
+{
+}
+
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark" style="height: fit-content;">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+        <li style="flex: 1; text-align: center;"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+        <li style="flex: 1; text-align: center;"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-cogs"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <!-- Home tab content -->
+        <div class="tab-pane" id="control-sidebar-home-tab">
+            <h5>Title Home</h5>
+            <p>Sidebar content</p>
+        </div>
+        <!-- /.tab-pane -->
+        <!-- Settings tab content -->
+        <div class="tab-pane" id="control-sidebar-settings-tab">
+            <h5>Title Settings</h5>
+            <p>Sidebar content</p>
+        </div>
+        <!-- /.tab-pane -->
+    </div>
+</aside>
+<!-- /.control-sidebar -->
+<!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+<div class="control-sidebar-bg"></div>

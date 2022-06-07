@@ -1,0 +1,317 @@
+﻿@page
+@using Sophie.Areas.Admin.ShopPage
+@using Sophie.Units
+@using App.Core.Constants
+
+@model Sophie.Areas.Admin.ShopPage.ListPromotionModel
+@{
+    ViewData["Title"] = "List Promotion Page";
+    ViewData["NameActivePage"] = NavigationPages.List_Promotion;
+}
+
+@section Styles {
+<style>
+    .selected {
+        background-color: #cff4d6 !important;
+    }
+</style>
+<!-- DataTables -->
+<link rel="stylesheet" href="~/lib/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="~/lib/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="~/lib/plugins/toastr/toastr.min.css">
+}
+@await Html.PartialAsync("~/Areas/Admin/Shared/_StatusMessage.cshtml", Model.StatusMessage)
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">@ViewData["Title"]</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Product</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.Content Header -->
+<!-- Main content -->
+<section class="content" style="padding: 0px 0px 0px 0px !important">
+    <div class="row">
+        <div class="col-12">
+            <!-- CARD TABLE-->
+            <div class="card"
+                <!-- card-header -->
+                <div class="card-header">
+                    <h3 class="card-title">List shop</h3>
+                    <div class="card-tools">
+                        <a  class="btn btn-success"  href="/Admin/ShopPage/Promotion/CreatePromotion" >Creat Promotion</a>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <!-- card-body -->
+                <div class="card-body" style="overflow: auto;">
+                    <table id="id_table_promotion" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>PromotionId</th>
+                                <th>PromotionName</th>
+                                <th>PromotionCode</th>
+                                <th>PromotionQuantity</th>
+                                <th>MinBuget</th>
+                                <th>Price</th>
+                                <th>MaxPriceDiscount</th>
+                                <th>Discount</th>
+                                <th>StartDate</th>
+                                <th>EndDate</th>
+                                <th>TypePay</th>
+                                <th>Type</th>
+                                <th>Updated</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.CARD TABLE-->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content bg-danger">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete?&hellip;</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                <button id="deleteConfirm" type="button" class="btn btn-outline-light">Save change</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.Main content -->
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<!-- jQuery -->
+<script src="~/lib/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/lib/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- SweetAlert2 -->
+<script src="~/lib/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="~/lib/plugins/toastr/toastr.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="~/lib/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+
+<script>
+    $(function () {
+         $.fn.dataTable.pipeline = function (opts) {
+                @*Configuration options*@
+                var conf = $.extend({
+                    pages: 10,     @*number of pages to cache*@
+                    url: '',      @*script url*@
+                    data: null,   @*function or object with parameters to send to the server*@
+                    @*matching how `ajax.data` works in DataTables*@
+                    method: 'GET' @*Ajax HTTP method*@
+                }, opts);
+
+                @*Private variables for storing the cache*@
+                var cacheLower = -1;
+                var cacheUpper = null;
+                var cacheLastRequest = null;
+                var cacheLastJson = null;
+
+                return function (request, drawCallback, settings) {
+                    var ajax = false;
+                    var requestStart = request.start;
+                    var drawStart = request.start;
+                    var requestLength = request.length;
+                    var requestEnd = requestStart + requestLength;
+
+                    if (settings.clearCache) {
+                        @*API requested that the cache be cleared*@
+                        ajax = true;
+                        settings.clearCache = false;
+                    }
+                    else if (cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper) {
+                        @*outside cached data - need to make a request*@
+                        ajax = true;
+                    }
+                    else if (JSON.stringify(request.order) !== JSON.stringify(cacheLastRequest.order) ||
+                        JSON.stringify(request.search) !== JSON.stringify(cacheLastRequest.search)
+                    ) {
+                        @*properties changed (ordering, columns, searching)*@
+                        ajax = true;
+                    }
+
+                    @*Store the request for checking next time around*@
+                    cacheLastRequest = $.extend(true, {}, request);
+                             if(request.order && request.order[0].column) {
+                        let order = request.columns[request.order[0].column].data;
+                        order = order.replace(/\b[a-z]/g, function(letter) {
+                            return letter.toUpperCase();
+                        });
+                        request.order[0].column = order
+                    } else {
+                        request.order = undefined;
+                    }
+                    request.columns = undefined;
+
+                    if (ajax) {
+                        @*Need data from the server*@
+                        if (requestStart < cacheLower) {
+                            requestStart = requestStart - (requestLength * (conf.pages - 1));
+
+                            if (requestStart < 0) {
+                                requestStart = 0;
+                            }
+                        }
+
+                        cacheLower = requestStart;
+                        cacheUpper = requestStart + (requestLength * conf.pages);
+
+                        request.start = requestStart;
+                        request.length = requestLength * conf.pages;
+
+                        @*Provide the same `data` options as DataTables*@
+                        if (typeof conf.data === 'function') {
+                            @*As a function it is executed with the data object as an arg
+                                                                                                                                            for manipulation. If an object is returned, it is used as the
+                                                                                                                                            data object to submit*@
+                            var d = conf.data(request);
+                            if (d) {
+                                $.extend(request, d);
+                            }
+                        }
+                        else if ($.isPlainObject(conf.data)) {
+                            @*As an object, the data given extends the default*@
+                            $.extend(request, conf.data);
+                        }
+
+                        return $.ajax({
+                            "type": conf.method,
+                            "url": conf.url,
+                            "data": request,
+                            "dataType": "json",
+                            "cache": false,
+                            "success": function (json) {
+                                cacheLastJson = $.extend(true, {}, json);
+
+                                if (cacheLower != drawStart) {
+                                    json.data.splice(0, drawStart - cacheLower);
+                                }
+                                if (requestLength >= -1) {
+                                    json.data.splice(requestLength, json.data.length);
+                                }
+
+                                drawCallback(json);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        json = $.extend(true, {}, cacheLastJson);
+                        json.draw = request.draw; @*Update the echo for each response*@
+                        json.data.splice(0, requestStart - cacheLower);
+                        json.data.splice(requestLength, json.data.length);
+
+                        drawCallback(json);
+                    }
+                }
+            };
+
+            $.fn.dataTable.Api.register('clearPipeline()', function () {
+                return this.iterator('table', function (settings) {
+                    settings.clearCache = true;
+                });
+            });
+
+             $(document).ready(function () {
+                var table = $('#id_table_promotion').DataTable({
+                    "paging": true,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": true,
+                    "processing": true,
+                    "serverSide": true,
+                    "columns": [
+                        { "data": "promotionId", "orderable": true, "width": "10%" },
+                        { "data": "promotionName", "orderable": true, "width": "10%" },
+                        { "data": "promotionCode", "orderable": true, "width": "10%" },
+                        { "data": "promotionQuantity", "orderable": true, "width": "5%" },
+                        { "data": "minBuget", "orderable": true, "width": "10%" },
+                        { "data": "price", "orderable": true, "width": "10%" },
+                        { "data": "maxPriceDiscount", "orderable": true, "width": "5%" },
+                        { "data": "discount", "orderable": true, "width": "5%" },
+                        { "data": "startDate", "orderable": true, "width": "5%" },
+                        { "data": "endDate", "orderable": true, "width": "5%" },
+                        { "data": "typePay", "orderable": true, "width": "5%" },
+                        { "data": "type", "orderable": true, "width": "5%" },
+                        { "data": "updated","orderable": false },
+                        {   "orderable": false,
+                            "data": "button",
+                            "width": "15%",
+                            "render": function (data, type, row, meta) {
+                                return "<a href='#' class='btn btn-info' onclick = EditData(this); >Edit</a><a href='#' class='btn btn-danger btn-hidden' onclick = DeleteData(this); style='margin-left: 5px;'>Delete</a>";
+                            }
+                        }
+                    ],
+                    "ajax": $.fn.dataTable.pipeline({
+                        url: '?handler=List',
+                        pages: 1 // number of pages to cache
+                    }),
+                });
+
+                @*color selected*@
+                $('#id_table_promotion tbody').on('click', 'tr', function () {
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                    }
+                    else
+                    {
+                        table.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                    }
+                });
+            });
+    });
+    function EditData(btnedit) {
+            var $row = $(btnedit).parent().parent();
+            var promotionId = $row.find("td:nth-child(1)").text();
+            window.location.href = '/Admin/ShopPage/Promotion/CreatePromotion?promotionId=' + promotionId;
+        }
+
+        function DeleteData(btndelete) {
+            var $row = $(btndelete).parent().parent();
+            var promotionId = $row.find("td:nth-child(1)").text();
+
+            $('#deleteModal').modal('show');
+            $('#deleteConfirm').click(function (e) {
+                $('#deleteModal').modal('hide');
+                window.location.href = '/Admin/ShopPage/Promotion/CreatePromotion?handler=Delete&promotionId=' + promotionId;
+            });
+        }
+</script>
+}

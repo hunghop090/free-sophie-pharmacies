@@ -1,0 +1,177 @@
+﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Sophie.Units;
+
+namespace Sophie.Resource.Entities
+{
+    public enum TypeActive
+    {
+        Pending,
+        Actived,
+        InActived
+    }
+
+    public enum TypeLogin
+    {
+        Phone,
+        Email,
+        Google,
+        Facebook,
+        Apple,
+        Other
+    }
+
+    [BsonIgnoreExtraElements]
+    public class Account
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+
+        [Display(Name = "AccountId")]
+        [BsonElement("AccountId")]
+        [BsonRepresentation(BsonType.String)]
+        public string AccountId { get; set; }
+
+        [Display(Name = "TypeLogin")]
+        [BsonElement("TypeLogin")]
+        [BsonRepresentation(BsonType.String)]       // Mongo
+        [JsonConverter(typeof(StringEnumConverter))]// Newtonsoft.Json
+        public TypeLogin TypeLogin { get; set; } = TypeLogin.Phone; // [Phone, Email, Google, Facebook, Apple, Other]
+
+        [Display(Name = "Confirm")]
+        [BsonElement("Confirm")]
+        [BsonRepresentation(BsonType.Boolean)]
+        public bool Confirm { get; set; } = false;
+
+        [Display(Name = "Active")]
+        [BsonElement("Active")]
+        [BsonRepresentation(BsonType.String)]       // Mongo
+        [JsonConverter(typeof(StringEnumConverter))]// Newtonsoft.Json
+        public TypeActive Active { get; set; } = TypeActive.Pending; // [Pending, Actived, InActived]
+
+        [Display(Name = "PhoneNumber")]
+        [BsonElement("PhoneNumber")]
+        [BsonRepresentation(BsonType.String)]
+        public string? PhoneNumber { get; set; }
+
+        [Display(Name = "Email")]
+        [BsonElement("Email")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Email { get; set; }
+
+        [Display(Name = "Username")]
+        [BsonElement("Username")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Username { get; set; }
+
+        [Display(Name = "Password")]
+        [BsonElement("Password")]
+        [BsonRepresentation(BsonType.String)]
+        public string Password { get; set; }
+
+
+
+        [Display(Name = "Firstname")]
+        [BsonElement("Firstname")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Firstname { get; set; }
+
+        [Display(Name = "Lastname")]
+        [BsonElement("Lastname")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Lastname { get; set; }
+
+        [Display(Name = "Fullname")]
+        [BsonElement("Fullname")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Fullname { get; set; }
+
+        [Display(Name = "Birthdate")]
+        [BsonElement("Birthdate")]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
+        [BsonRepresentation(BsonType.String)]
+        public DateTime? Birthdate { get; set; }
+
+        [Display(Name = "Address")]
+        [BsonElement("Address")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Address { get; set; }
+
+        [Display(Name = "HomePhone")]
+        [BsonElement("HomePhone")]
+        [BsonRepresentation(BsonType.String)]
+        public string? HomePhone { get; set; }
+
+        [Display(Name = "Avatar")]
+        [BsonElement("Avatar")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Avatar { get; set; }
+
+        [Display(Name = "Race")]
+        [BsonElement("Race")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Race { get; set; }
+
+        [Display(Name = "Gender")]
+        [BsonElement("Gender")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Gender { get; set; }
+
+        [Display(Name = "Language")]
+        [BsonElement("Language")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Language { get; set; }
+
+
+
+        [Display(Name = "TwoFactorEnabled")]
+        [BsonElement("TwoFactorEnabled")]
+        [BsonRepresentation(BsonType.Boolean)]
+        public bool TwoFactorEnabled { get; set; } = false;
+
+        [Display(Name = "IsOnline")]
+        [BsonElement("IsOnline")]
+        [BsonRepresentation(BsonType.String)]
+        public bool? IsOnline { get; set; }
+
+        [Display(Name = "VideoCallId")]
+        [BsonElement("VideoCallId")]
+        [BsonRepresentation(BsonType.String)]
+        public string? VideoCallId { get; set; }
+
+        [Display(Name = "VideoCallToken")]
+        [BsonElement("VideoCallToken")]
+        [BsonRepresentation(BsonType.String)]
+        public string? VideoCallToken { get; set; }
+
+        [Display(Name = "Notes")]
+        [BsonElement("Notes")]
+        [BsonRepresentation(BsonType.String)]
+        public string? Notes { get; set; }
+
+        [Display(Name = "DynamicField")]
+        [BsonElement("DynamicField")]
+        [BsonRepresentation(BsonType.String)]
+        public string? DynamicField { get; set; }
+
+
+
+        [Display(Name = "Created")]
+        [BsonElement("Created")]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
+        [BsonRepresentation(BsonType.String)]
+        public DateTime Created { get; set; } = DateTimes.Now();
+
+        [Display(Name = "Updated")]
+        [BsonElement("Updated")]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Unspecified)]
+        [BsonRepresentation(BsonType.String)]
+        public DateTime Updated { get; set; } = DateTimes.Now();
+    }
+}

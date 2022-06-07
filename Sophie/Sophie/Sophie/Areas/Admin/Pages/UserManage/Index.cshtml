@@ -1,0 +1,558 @@
+﻿@page
+@using Sophie.Areas.Admin.Pages.UserManage
+@addTagHelper *, JqueryDataTables.ServerSide.AspNetCoreWeb
+
+@model UserManageModel
+@{ ViewData["Title"] = "User Manage";
+                ViewData["NameActivePage"] = NavigationPages.UserManage; }
+
+@section Styles {
+    <!-- bootstrap-multiselect https://github.com/davidstutz/bootstrap-multiselect -->
+    <link rel="stylesheet" href="~/lib/bootstrap-multiselect/css/bootstrap-multiselect.css" type="text/css" />
+    <!-- jsGrid -->
+    <link rel="stylesheet" href="~/lib/plugins/jsgrid-1.5.3/dist/jsgrid.min.css">
+    <link rel="stylesheet" href="~/lib/plugins/jsgrid-1.5.3/dist/jsgrid-theme.min.css">
+    <style>
+        .external-pager {
+            margin: 10px 0;
+        }
+        .external-pager .jsgrid-pager-current-page {
+            background: transparent;
+            color: #000;
+        }
+        .ui-jqgrid tr.jqgrow td {
+            white-space: normal !important;
+        }
+    </style>
+}
+
+<h4>@ViewData["Title"]</h4>
+@await Html.PartialAsync("~/Areas/Admin/Shared/_StatusMessage.cshtml", Model.StatusMessage)
+
+<div class="row">
+    <div class="card" style="margin-left: 10px; margin-right: 10px; overflow: hidden">
+        <div class="card-header">
+            <h3 class="card-title">Manage List User</h3>
+        </div>
+        <div class="card-body" style="padding: 0px 0px 0px 0px !important">
+            <div class="row">
+                <div id="jsGrid_AccountManage" style="margin: 0px;"></div>
+                <div id="externalPager" class="external-pager"></div>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <!-- bootstrap-multiselect https://github.com/davidstutz/bootstrap-multiselect -->
+    <script src="~/lib/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+    <!-- jsGrid -->
+    @*
+        <script src="https://code.jquery.com/jquery-1.11.2.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    *@
+    <script src="~/lib/plugins/jsgrid-1.5.3/dist/jsgrid.min.js"></script>
+    <script src="~/lib/plugins/jsgrid-1.5.3/src/jsgrid.core.js"></script>
+    <script src="~/lib/plugins/jsgrid-1.5.3/src/jsgrid.load-indicator.js"></script>
+    <script src="~/lib/plugins/jsgrid-1.5.3/src/jsgrid.load-strategies.js"></script>
+    <script src="~/lib/plugins/jsgrid-1.5.3/src/jsgrid.sort-strategies.js"></script>
+    <script src="~/lib/plugins/jsgrid-1.5.3/src/jsgrid.field.js"></script>
+    <script src="~/lib/plugins/jsgrid-1.5.3/src/fields/jsgrid.field.text.js"></script>
+    <script src="~/lib/plugins/jsgrid-1.5.3/src/fields/jsgrid.field.control.js"></script>
+
+    <script src="~/lib/plugins/jsgrid-1.5.3/demos/db.js"></script>
+    <script>
+        $(function () {
+
+            /* type data jsGrid */
+            var type_selectDate = function (config) {
+                jsGrid.Field.call(this, config);
+            };
+            type_selectDate.prototype = new jsGrid.Field({
+                sorter: function (date1, date2) {
+                    return new Date(date1) - new Date(date2);
+                },
+                itemTemplate: function (value) {
+                    if (value != null && value != "") {
+                        return new Date(value).toDateString();
+                    }
+                    return ""
+                },
+                insertTemplate: function (value) {
+                    if (value != null && value != "") {
+                        return this._insertPicker = $("<input>").datepicker({ defaultDate: new Date() });
+                    }
+                    return this._insertPicker = $("<input>").datepicker({ defaultDate: null });
+                },
+                editTemplate: function (value) {
+                    if (value != null && value != "") {
+                        return this._editPicker = $("<input>").datepicker().datepicker("setDate", new Date(value));
+                    }
+                    return this._editPicker = $("<input>").datepicker({ defaultDate: null });
+                },
+                insertValue: function () {
+                    if (this._insertPicker.datepicker("getDate") != null) {
+                        return this._insertPicker.datepicker("getDate").toISOString();
+                    }
+                    return null;
+                },
+                editValue: function () {
+                    if (this._editPicker.datepicker("getDate") != null) {
+                        return this._editPicker.datepicker("getDate").toISOString();
+                    }
+                    return null;
+                }
+            });
+            jsGrid.fields.type_selectDate = type_selectDate;
+
+            /* type data jsGrid */
+            var type_checkBox = function (config) {
+                jsGrid.Field.call(this, config);
+            };
+            type_checkBox.prototype = new jsGrid.Field({
+                itemTemplate: function (value) {
+                    return $("<input>").attr("type", "checkbox").prop("checked", value).prop("disabled", true);
+                },
+                insertTemplate: function (value) {
+                    return this._insertCheckBok = $("<input>").attr("type", "checkbox").prop("checked", value);
+                },
+                editTemplate: function (value) {
+                    return this._editCheckBok = $("<input>").attr("type", "checkbox").prop("checked", value);
+                },
+                insertValue: function () {
+                    return this._insertCheckBok.is(":checked");
+                },
+                editValue: function () {
+                    return this._editCheckBok.is(":checked");
+                }
+            });
+            jsGrid.fields.type_checkBox = type_checkBox;
+
+
+            /* type data jsGrid */
+            var type_selectObject = function (config) {
+                jsGrid.Field.call(this, config);
+            };
+            type_selectObject.prototype = new jsGrid.Field({
+                items: [],
+                selectField: "",/* selectField=name_type */
+                _createSelect: function (selectedValue) {
+                    /*console.log("_createSelect: " + JSON.stringify(selectedValue, undefined, 2));*/
+                    var _field = this.selectField;
+                    var $result = $("<select>");
+                    $.each(this.items, function (index, item) {
+                        var value = item[_field];
+                        var $opt = $("<option>").text(value);
+                        if (value == selectedValue) {
+                            $opt.attr("selected", "selected");
+                        }
+                        $result.append($opt);
+                    });
+                    return $result;
+                },
+                sorter: function (ojb1, obj2) {
+                    return true;
+                },
+                itemTemplate: function (valColumn) {
+                    /*console.log("itemTemplate: " + JSON.stringify(valColumn, undefined, 2));*/
+                    if (Array.isArray(valColumn)) {
+                        var valColumnArray = [];
+                        $.each(valColumn, function (index, item) {
+                            valColumnArray.push(item);
+                        });
+                        return valColumnArray[0];
+                    }
+                    return valColumn;
+                },
+                insertTemplate: function () {
+                    var valColumn = "Website";
+                    /*console.log("insertTemplate: " + JSON.stringify(valColumn, undefined, 2));*/
+                    var insertControl = this._insertControl = this._createSelect(valColumn);
+                    return insertControl;
+                },
+                editTemplate: function (valColumn) {
+                    /*console.log("editTemplate: " + JSON.stringify(valColumn, undefined, 2));*/
+                    if (Array.isArray(valColumn)) {
+                        var valColumnArray = [];
+                        $.each(valColumn, function (index, item) {
+                            valColumnArray.push(item);
+                        });
+                        valColumn = valColumnArray[0];
+                    }
+                    var editControl = this._editControl = this._createSelect(valColumn);
+                    return editControl;
+                },
+                insertValue: function () {
+                    var list = this._insertControl.find("option:selected").map(function () {
+                        return this.selected ? $(this).text() : null;
+                    });
+                    var valName = list["0"];
+                    var obj = [valName];
+                    return obj;
+                },
+                editValue: function () {
+                    var list = this._editControl.find("option:selected").map(function () {
+                        return this.selected ? $(this).text() : null;
+                    });
+                    var valName = list["0"];
+                    var obj = [valName];
+                    return obj;
+                }
+            });
+            jsGrid.fields.type_selectObject = type_selectObject;
+
+
+            /* type data jsGrid */
+            var type_selectObject_roles = function (config) {
+                jsGrid.Field.call(this, config);
+            };
+            type_selectObject_roles.prototype = new jsGrid.Field({
+                items: [],
+                selectField: "id",/* selectField=id */
+                showField: "name",/* selectField=name */
+                _createSelect: function (selectedValue) {
+                    @*console.log("_createSelect: " + JSON.stringify(selectedValue, undefined, 2) + " in list " + JSON.stringify(this.items, undefined, 2));*@
+                    var $result = $("<select>");
+                    $.each(this.items, function (index, item) {
+                        var valueId = item["id"]; //item[this.selectField];
+                        var valueName = item["name"]; //item[this.showField];
+                        @*console.log("index: " + index + " - " + JSON.stringify(valueId, undefined, 2) + " - " + JSON.stringify(valueName, undefined, 2));*@  
+                        var $opt = $("<option>").text(valueName);
+                        if (valueId == selectedValue) {
+                            $opt.attr("selected", "selected");
+                        }
+                        $result.append($opt);
+                    });
+                    return $result;
+                },
+                sorter: function (ojb1, obj2) {
+                    return true;
+                },
+                itemTemplate: function (valColumn) {
+                    @*console.log("itemTemplate: " + JSON.stringify(valColumn, undefined, 2));*@
+                    var valColumnArray = [];
+                    var check = false;
+                    $.each(this.items, function (index, item) {
+                        var valueId = item["id"]; //item[this.selectField];
+                        var valueName = item["name"]; //item[this.showField]; 
+                        @*console.log("index: " + index + " - " + JSON.stringify(valueId, undefined, 2) + " - " + JSON.stringify(valueName, undefined, 2));*@
+
+                        check = false;
+                        if (Array.isArray(valColumn)) {
+                            $.each(valColumn, function (index2, item2) {
+                                if (valueId == item2) {
+                                    check = true;
+                                }
+                            });
+                        } else {
+                            if (valueId == valColumn) {
+                                check = true;
+                            }
+                        }
+
+                        if (check) {
+                            valColumnArray.push(valueName);
+                        }
+                    });
+                    
+                    return valColumnArray;
+                },
+                insertTemplate: function () {
+                    var valColumn = [];
+                    @*console.log("insertTemplate: " + JSON.stringify(valColumn, undefined, 2));*@
+                    var insertControl = this._insertControl = this._createSelect(valColumn);
+                    return insertControl;
+                },
+                editTemplate: function (valColumn) {
+                    @*console.log("editTemplate: " + JSON.stringify(valColumn, undefined, 2));*@
+                    if (Array.isArray(valColumn)) {
+                        var valColumnArray = [];
+                        $.each(valColumn, function (index, item) {
+                            valColumnArray.push(item);
+                        });
+                        valColumn = valColumnArray[0];
+                    }
+                    var editControl = this._editControl = this._createSelect(valColumn);
+                    return editControl;
+                },
+                insertValue: function () {
+                    var list = this._insertControl.find("option:selected").map(function () {
+                        return this.selected ? $(this).text() : null;
+                    });
+                    var valSelected = list[0];
+                    var objSelected = [valSelected];
+                    console.log("insertValue: " + JSON.stringify(objSelected, undefined, 2));
+
+                    var valList = [];
+                    $.each(this.items, function (index, item) {
+                        var valueId = item["id"]; //item[this.selectField];  
+                        var valueName = item["name"]; //item[this.showField];
+                        @*console.log("index: " + index + " - " + JSON.stringify(valueId, undefined, 2) + " - " + JSON.stringify(valueName, undefined, 2));*@
+                        if (valueName == objSelected) {
+                            valList.push(valueId);
+                        }
+                    });
+
+                    return valList;
+                },
+                editValue: function () {
+                    var list = this._editControl.find("option:selected").map(function () {
+                        return this.selected ? $(this).text() : null;
+                    });
+                    var valSelected = list[0];
+                    var objSelected = [valSelected];
+                    @*console.log("editValue: " + JSON.stringify(objSelected, undefined, 2));*@
+
+                    var valList = [];
+                    $.each(this.items, function (index, item) {
+                        var valueId = item["id"]; //item[this.selectField];  
+                        var valueName = item["name"]; //item[this.showField];
+                        @*console.log("index: " + index + " - " + JSON.stringify(valueId, undefined, 2) + " - " + JSON.stringify(valueName, undefined, 2));*@
+                        if (valueName == objSelected) {
+                            valList.push(valueId);
+                        }
+                    });
+
+                    return valList;
+                }
+            });
+            jsGrid.fields.type_selectObject_roles = type_selectObject_roles;
+
+            @*
+                var dataAccounts = @Json.Serialize(Model.ListAccounts);
+                console.log("ListAccounts: " + JSON.stringify(dataAccounts));
+            *@
+            var _dataRoles = @Json.Serialize(Model.ListRole);
+            var _dataProvider = @Json.Serialize(Model.ListProvider);
+
+            /* http://js-grid.com/docs/#grid-controller */
+            var my_grid = $("#jsGrid_AccountManage").jsGrid({
+                autoload: true,
+                width: "auto",
+                height: "auto",
+
+                heading: true,
+                filtering: false,
+                inserting: true,
+                editing: true,
+                selecting: true,
+                sorting: true,
+
+                editButton: true,
+                deleteButton: true,
+                clearFilterButton: true,
+                modeSwitchButton: true,
+
+                searchModeButtonTooltip: "Switch to searching",
+                insertModeButtonTooltip: "Switch to inserting",
+                editButtonTooltip: "Edit",
+                deleteButtonTooltip: "Delete",
+                searchButtonTooltip: "Search",
+                clearFilterButtonTooltip: "Clear filter",
+                insertButtonTooltip: "Insert",
+                updateButtonTooltip: "Update",
+                cancelEditButtonTooltip: "Cancel edit",
+                noDataContent: "Not found data",
+                confirmDeleting: true,
+                deleteConfirm: function (item) { return "The item \"" + item.userName + "\" will be removed. Are you sure?"; },
+                rowClass: function (item, itemIndex) {},
+                rowClick: function (args) {},
+                rowDoubleClick: function (args) {},
+
+                paging: true,
+                pageLoading: true,/* server-side pagination */
+                pagerContainer: "#externalPager",
+                pageIndex: 1,
+                pageSize: 10,
+                pageButtonCount: 5,
+                pagerFormat: "&nbsp;&nbsp;&nbsp; Pages: {first} {prev} {pages} {next} {last}    &nbsp;   {pageIndex} of {pageCount}",
+                pagePrevText: "Prev",
+                pageNextText: "Next",
+                pageFirstText: "First",
+                pageLastText: "Last",
+                pageNavigatorNextText: "&#8230;",
+                pageNavigatorPrevText: "&#8230;",
+
+                invalidNotify: function (args) {},
+                invalidMessage: "Invalid data entered!",
+
+                loadIndication: true,
+                loadIndicationDelay: 500,
+                loadMessage: "Please, wait...",
+                loadShading: true,
+
+                updateOnResize: true,
+
+                headerRowRenderer: null,
+                rowRenderer: null,
+                filterRowRenderer: null,
+                insertRowRenderer: null,
+                editRowRenderer: null,
+
+                @*data: dataAccounts*@
+                controller: {
+                    @*loadData: function () {
+                        var d = $.Deferred();
+                        setTimeout(function () {
+                            d.resolve(dataAccounts);
+                        }, 1000);
+                        return d.promise();
+                    },*@
+                    loadData: function (filter) {
+                        console.log("Filter: " + JSON.stringify(filter, undefined, 2))
+                        var d = $.Deferred();
+                        $.ajax({
+                            type: "POST",
+                            url: "?handler=ListItem",
+                            data: filter,
+                            headers: {
+                                RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+                            },
+                            success: function (response) {
+                                /*console.log("Result ListItem: " + JSON.stringify(response, undefined, 2))*/
+                                if (response.message == 'Success') {
+                                    /*
+                                    var startIndex = (filter.pageIndex - 1) * filter.pageSize;
+                                    var pageSize = filter.pageSize;
+                                    var data = {
+                                        data: response.data.slice(startIndex, startIndex + pageSize),
+                                        itemsCount: response.data.length
+                                    }
+                                    */
+                                    var data = {
+                                        data: response.data,
+                                        itemsCount: response.itemsCount
+                                    }
+                                    d.resolve(data);
+                                } else {
+                                    d.resolve(null);
+                                    Toast.fire({ type: 'error', title: 'Error: ' + JSON.stringify(response.data, undefined, 2) });
+                                }
+                            },
+                            error: function (result, status, err) {
+                                var message = result['responseJSON']['description'];
+                                if (message == undefined) {
+                                    message = result['responseJSON']['error'];
+                                };
+                                Toast.fire({type: 'error', title: 'Error ' + result.status + ' : ' + message});
+                            }
+                        });
+                        return d.promise();
+                    },
+                    insertItem: function (item) {
+                        var d = $.Deferred();
+                        $.ajax({
+                            type: "POST",
+                            url: "?handler=InsertItem",
+                            data: item,
+                            headers: {
+                                RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+                            },
+                            success: function (response) {
+                                /*console.log("Result InsertItem: " + JSON.stringify(response, undefined, 2))*/
+                                if (response.message == 'Success') {
+                                    d.resolve(response.data);
+                                    Toast.fire({ type: 'success', title: 'Add item successfully!' });
+                                } else {
+                                    d.reject();
+                                    Toast.fire({ type: 'error', title: 'Error: ' + JSON.stringify(response.data, undefined, 2) });
+                                }
+                            },
+                            error: function (result, status, err) {
+                                var message = result['responseJSON']['description'];
+                                if (message == undefined) {
+                                    message = result['responseJSON']['error'];
+                                }
+                                Toast.fire({ type: 'error', title: 'Error ' + result.status + ' : ' + message });
+                            }
+                        });
+                        return d.promise();
+                    },
+                    updateItem: function (item) {
+                        var d = $.Deferred();
+                        $.ajax({
+                            type: "POST",
+                            url: "?handler=UpdateItem",
+                            data: item,
+                            headers: {
+                                RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+                            },
+                            success: function (response) {
+                                /*console.log("Result UpdateItem: " + JSON.stringify(result, undefined, 2))*/
+                                if (response.message == 'Success') {
+                                    d.resolve(response.data);
+                                    Toast.fire({ type: 'success', title: 'Update item successfully!' });
+                                } else {
+                                    d.reject();
+                                    Toast.fire({ type: 'error', title: 'Error: ' + JSON.stringify(response.data, undefined, 2) });
+                                }
+                            },
+                            error: function (result, status, err) {
+                                var message = result['responseJSON']['description'];
+                                if (message == undefined) {
+                                    message = result['responseJSON']['error'];
+                                };
+                                Toast.fire({ type: 'error', title: 'Error ' + result.status + ' : ' + message });
+                            }
+                        });
+                        return d.promise();
+                    },
+                    deleteItem: function (item) {
+                        var d = $.Deferred();
+                        $.ajax({
+                            type: "POST",
+                            url: "?handler=DeleteItem",
+                            data: item,
+                            headers: {
+                                RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+                            },
+                            success: function (response) {
+                                /*console.log("Result DeleteItem: " + JSON.stringify(result, undefined, 2))*/
+                                if (response.message == 'Success') {
+                                    d.resolve(response.data);
+                                    Toast.fire({ type: 'success', title: 'Delete item successfully!' });
+                                } else {
+                                    d.reject();
+                                    Toast.fire({ type: 'error', title: 'Error: ' + JSON.stringify(response.data, undefined, 2) });
+                                }
+                            },
+                            error: function (result, status, err) {
+                                var message = result['responseJSON']['description'];
+                                if (message == undefined) {
+                                    message = result['responseJSON']['error'];
+                                };
+                                Toast.fire({ type: 'error', title: 'Error ' + result.status + ' : ' + message });
+                            }
+                        });
+                        return d.promise();
+                    },
+                },
+
+                fields: [
+                    { type: "control", modeSwitchButton: true, editButton: true, deleteButton: true },
+                    { name: "id", type: "text", width: 120, readOnly: true, visible: true },
+                    { name: "firstName", title: "First Name", type: "text", width: 100 },
+                    { name: "lastName", title: "Last Name", type: "text", width: 120 },
+                    { name: "roles", title: "Roles", type: "type_selectObject_roles", width: 100, items: _dataRoles, selectField: "id", showField: "name" },
+                    { name: "provider", title: "Provider", type: "type_selectObject", width: 100, items: _dataProvider, selectField: "name_type" },
+                    { name: "userName", title: "UserName", type: "text", width: 200 },
+                    { name: "email", title: "Email", type: "text", width: 200 },
+                    { name: "emailConfirmed", title: "Email Confirmed", type: "type_checkBox", width: 100, sorting: false },
+                    { name: "password", title: "Password", type: "text", width: 200 },
+                    { name: "phoneNumber", title: "PhoneNumber", type: "text", width: 120 },
+                    { name: "phoneNumberConfirmed", title: "PhoneNumber Confirmed", type: "type_checkBox", width: 120, sorting: false },
+                    { name: "twoFactorEnabled", title: "TwoFactor Enabled", type: "type_checkBox", width: 100, sorting: false },
+                    { name: "lockoutEnd", title: "LockoutEnd", type: "type_selectDate", width: 100 },
+                    { name: "lockoutEnabled", title: "Lockout Enabled", type: "type_checkBox", width: 100, sorting: false },
+                    { name: "accessFailedCount", title: "Access Failed Count", type: "text", width: 100 },
+                    { name: "created", title: "Created", type: "type_selectDate", width: 100 },
+                    { name: "updated", title: "Updated", type: "type_selectDate", width: 100 },
+                ],
+            });
+
+        });
+
+    </script>
+}

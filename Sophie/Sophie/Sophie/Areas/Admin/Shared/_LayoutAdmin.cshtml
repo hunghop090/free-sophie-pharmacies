@@ -1,0 +1,123 @@
+﻿@namespace Sophie.Areas.Admin.Shared
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>@ViewData["Title"]</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/lib/plugins/fontawesome-free/css/all.min.css">
+    <!-- IonIcons -->
+    @*<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">*@
+    <link rel="stylesheet" href="~/lib/plugins/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- jQuery UI 1.12.1 -->
+    <link rel="stylesheet" href="~/lib/plugins/jquery-ui/jquery-ui.min.css">
+    <!-- Bootstrap 4.3.1-->
+    <link rel="stylesheet" href="~/lib/plugins/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="~/lib/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+
+    @RenderSection("Styles", required: false)
+</head>
+
+<body class="hold-transition sidebar-mini text-sm">
+    <!-- wrapper -->
+    <div class="wrapper">
+        <!-- Navbar -->
+        @await Html.PartialAsync("~/Areas/Admin/Shared/_HeaderAdminPartial.cshtml")
+
+        <!-- Main Sidebar Container -->
+        @await Html.PartialAsync("~/Areas/Admin/Shared/_MenuAdminPartial.cshtml")
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="padding: 5px 5px 5px 5px;">
+            @RenderBody()
+        </div>
+        <!-- /. Content Wrapper -->
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 3.0.2
+            </div>
+        </footer>
+
+        <!-- Control Sidebar -->
+        @await Html.PartialAsync("~/Areas/Admin/Shared/_SidebarAdminPartial.cshtml")
+    </div>
+    <!-- ./wrapper -->
+
+
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery 3.4.1-->
+    <script src="~/lib/plugins/jquery/jquery.min.js"></script>
+    <script src="~/lib/plugins/moment/moment.min.js"></script>
+    <!-- jQuery UI 1.12.1 -->
+    <script src="~/lib/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Bootstrap 4.3.1 -->
+    <script src="~/lib/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="~/lib/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="~/lib/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- OPTIONAL SCRIPTS -->
+    <environment include="Development">
+        <!--You should not use this file in production. This file is for demo purposes only.-->
+        <script src="~/dist/js/demo.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/dist/js/demo.js"></script>
+    </environment>
+
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000
+        });
+    </script>
+
+    <!-- MORE SCRIPTS -->
+    @RenderSection("Scripts", required: false)
+
+    <script type="text/javascript">var idleTime = 0;
+        $(document).ready(function () {
+            /*Increment the idle time counter every minute.*/
+            idleInterval = setInterval(timerIncrement, 300000); // 5 minute
+
+            $('body').mousemove(function (e) {
+                idleTime = 0;
+            });
+
+            $('body').keypress(function (e) {
+                idleTime = 0;
+            });
+
+            $('body').click(function () {
+                idleTime = 0;
+            });
+        });
+
+        function timerIncrement() {
+            idleTime = idleTime + 1;
+            if (idleTime > 10) {/* 10 minutes */
+                window.location.href = '/Admin/Extras/_LockScreen?callback=' + location.pathname;
+            }
+        }
+    </script>
+</body>
+</html>

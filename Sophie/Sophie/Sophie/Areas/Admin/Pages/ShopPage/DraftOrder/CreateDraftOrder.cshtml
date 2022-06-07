@@ -1,0 +1,471 @@
+﻿@page
+@using App.Core.Constants
+@using Sophie.Areas.Admin.ShopPage
+@using Sophie.Resource.Entities.Shop
+@using Sophie.Resource.Model
+@using System.Globalization
+
+@model Sophie.Areas.Admin.ShopPage.CreateDraftOrderModel
+@{
+    ViewData["Title"] = "Create DraftOrder Page";
+    ViewData["NameActivePage"] = NavigationPages.Create_DraftOrder;
+    var ListProductCount = 0;
+    if (@Model.DraftOrder?.ListProduct != null)
+        ListProductCount = @Model.DraftOrder.ListProduct.Count;
+
+}
+@functions {
+
+    private string FromatDiscount(Promotion item)
+    {
+        var stringDiscount = item.PromotionCode + " - Giảm ";
+        if (item.TypeDiscount == TypePromotionsDiscount.TypePromotionsDiscount_1)
+        {
+            stringDiscount += item.Discount + "% ";
+        }
+        else
+        {
+            stringDiscount += FromatPrice(item.Price.Value) + " ";
+        }
+        if (item.MinBuget > 0)
+        {
+            stringDiscount += "cho đơn hàng tối thiểu " + FromatPrice(item.MinBuget);
+        }
+        else
+        {
+            stringDiscount += "cho tất cả đơn hàng";
+        }
+        return stringDiscount;
+    }
+
+    private string FromatTransportDiscount(TransportPromotion item)
+    {
+        var stringDiscount = item.TransportPromotionCode + " - Giảm ";
+        if (item.TypeDiscount == TypeTransportPromotionsDiscount.TypeTransportPromotionsDiscount_1)
+        {
+            stringDiscount += item.Discount + "% ";
+        }
+        else
+        {
+            stringDiscount += FromatPrice(item.Price.Value) + " ";
+        }
+        if (item.MinBuget > 0)
+        {
+            stringDiscount += " giá vận chuyển cho đơn hàng tối thiểu " + FromatPrice(item.MinBuget.Value);
+        }
+        else
+        {
+            stringDiscount += " giá vận chuyển cho tất cả đơn hàng";
+        }
+        return stringDiscount;
+    }
+
+    private string FromatPrice(long text)
+    {
+        CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   // try with "en-US"
+        return text.ToString("#,###", cul.NumberFormat) + " VND";
+    }
+}
+
+@section Styles {
+<style>
+    .selected {
+        background-color: #cff4d6 !important;
+    }
+
+    .close-content, .add-content {
+        display: flex;
+        justify-content: center;
+        font-size: 30px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        margin-top: -7.5px;
+    }
+
+    #list-product .form-group {
+        margin-top: 1rem;
+    }
+
+        #list-product .form-group div {
+            padding: 8.5px;
+        }
+
+    #list-product .input-group {
+        border-bottom: 1px solid #333;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+
+        .select2-container .select2-selection--single {
+            min-height: 35.5px !important;
+            padding: 10px;
+        }
+
+    input-group
+</style>
+<!-- DataTables -->
+<link rel="stylesheet" href="~/lib/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="~/lib/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="~/lib/plugins/toastr/toastr.min.css">
+<link rel="stylesheet" href="~/lib/plugins/select2/css/select2.min.css">
+}
+@await Html.PartialAsync("~/Areas/Admin/Shared/_StatusMessage.cshtml", Model.StatusMessage)
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">@ViewData["Title"]</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Product</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.Content Header -->
+<!-- Main content -->
+<section class="content" style="padding: 0px 0px 0px 0px !important">
+    <div class="row">
+        <div class="col-12">
+            <!-- left column -->
+            <div class="col-md-6">
+            </div>
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+            </div>
+            <!--/.col (right) -->
+
+            <form id="quickForm" role="form" asp-page-handler="Create" method="post" enctype="multipart/form-data">
+                <!-- CARD TABLE-->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Create new draftOrder</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Account</label>
+                                    <select id="AccountId" name="AccountId" value="@Model.DraftOrder?.AccountId" class="form-control select2-dropdown">
+                                        <option value="">Chọn khách hàng</option>
+                                        @foreach (var item in Model.ListAccount)
+                                        {
+                                            <option value="@item.AccountId">@item.Fullname @(String.IsNullOrEmpty(@item.Email)? "" :"| " + @item.Email ) @(String.IsNullOrEmpty(@item.PhoneNumber)? "" :"| " + @item.PhoneNumber.Replace("+84","0") )</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Type</label>
+                                    <select class="form-control select2-dropdown" id="Type" name="Type" value="@Model.DraftOrder?.Type">
+                                        <option value="Actived">Actived</option>
+                                        <option value="Draft">Draft</option>
+                                        <option value="Trash">Trash</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Promotion</label>
+                                    <select onchange="CaculatorPromotion()" value="@(String.Join(",",Model.DraftOrder?.PromotionIds != null ?Model.DraftOrder?.PromotionIds:new List<string>()))" multiple id="PromotionIds" name="PromotionIds" class="form-control select2-dropdown">
+                                        @foreach (var item in Model.ListPromotion)
+                                        {
+                                            <option data-title="@FromatDiscount(item)" value="@item.PromotionId">@item.PromotionName (@item.PromotionCode)</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>TransportPromotion</label>
+                                    <select onchange="CaculatorPromotion()" value="@String.Join(",",Model.DraftOrder?.PromotionIds != null ?Model.DraftOrder?.TransportPromotionIds:new List<string>())" multiple id="TransportPromotionIds" name="TransportPromotionIds" class=" select2-dropdown form-control">
+                                        @foreach (var item in Model.ListTransportPromotion)
+                                        {
+                                            <option data-title="@FromatTransportDiscount(item)" value="@item.TransportPromotionId">@item.TransportPromotionName (@item.TransportPromotionCode)</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Product</label>
+                                    <select onchange="SelectProduct()" class="form-control select2-dropdown" id="select-product">
+                                        <option value="">Chọn sản phẩm</option>
+                                        @foreach (var item in Model.ListProduct)
+                                        {
+                                            <option id="@item.ProductId" data-price="@item.ProductPrice" data-name="@item.ProductName" value="@item.ProductId">@item.ProductName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center" style="border-bottom:1px solid #333;">
+                            <div class="col-sm-5 text-left">
+                                <label>ProductName</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Quantity</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label>ProductPrice</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Price</label>
+                            </div>
+                            <div class=" col-sm-1 ">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="list-product" class="form-group">
+                                    @for (var i = 0; i < @Model.DraftOrder?.ListProduct?.Count; i++)
+                                    {
+                                        var info = @Model.DraftOrder?.ListProduct[i];
+                                        <div class="input-group" id="product-@info.ProductId">
+                                            <div class="form-group col-sm-5"><div>@info.ProductName</div></div>
+                                            <div class="form-group col-sm-2">
+                                                <input id="product-quantity-@info.ProductId" onchange="UpdateTotalPrice('@info.ProductId')" type="text" class="form-control text-right quantity" placeholder="Enter ..." name="ListProduct[@i].Quantity" value="@info.Quantity">
+                                            </div>
+                                            <div value="@info.ProductPrice" class="form-group col-sm-2 product-price"><div class="format-currency text-right">@info.ProductPrice</div></div>
+                                            <div class="form-group col-sm-2 "><div class="format-currency text-right total-price">@(info.ProductPrice * info.Quantity)</div></div>
+                                            <div onclick="$(this).parent().remove();renumber_blocks();" class="form-group col-sm-1 close-content">
+                                                <i class="fas fa-times-circle"></i>
+                                            </div>
+                                            <input hidden name="ListProduct[@i].ProductName" value="@info.ProductName">
+                                            <input hidden name="ListProduct[@i].ProductId" value="@info.ProductId">
+                                            <input hidden name="ListProduct[@i].ProductPrice" value="@info.ProductPrice">
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4">Transport Price</label>
+                                    <div class="col-sm-4 text-right format-currency" id="transport-price">@Model.DraftOrder?.TransportPrice</div>
+                                    <div class="col-sm-4"></div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4">Transport Promotion Price</label>
+                                    <div class="col-sm-4 text-right format-currency" id="transport-promotion-price">@Model.DraftOrder?.TransportPromotionPrice</div>
+                                    <div class="col-sm-4"></div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4">Promotion Price</label>
+                                    <div class="col-sm-4 text-right format-currency" id="promotion-price">@Model.DraftOrder?.PromotionPrice</div>
+                                    <div class="col-sm-4"></div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4">Total Product Price</label>
+                                    <div class="col-sm-4 text-right format-currency" id="product-price">@(Model.DraftOrder?.Price + Model.DraftOrder?.PromotionPrice+Model.DraftOrder?.TransportPromotionPrice+Model.DraftOrder?.TransportPrice)</div>
+                                    <div class="col-sm-4"></div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4">Total Price</label>
+                                    <div class="col-sm-4 text-right format-currency" id="total-price">@Model.DraftOrder?.Price</div>
+                                    <input hidden id="total-price" name="Price" value="@Model.DraftOrder?.Price" />
+                                    <div class="col-sm-4"></div>
+                                </div>
+                                <div id="result-text" class="text-danger" style="font-weight: 700;margin-left: 20px;"></div>
+                            </div>
+                            <div class="col-sm-6" id="display-promotion">
+                            </div>
+                        </div>
+                         <input hidden name="PharmacistId" value="@Model.DraftOrder?.PharmacistId" />
+
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <a hidden id="caculator" class="btn btn-success">Tính khuyễn mãi</a>
+                        <button type="submit" id="btn_create_save" class="btn btn-success">@(string.IsNullOrEmpty(Model.DraftOrder?.DraftOrderId) ? "Create":"Update")</button>
+                        <a hidden="@string.IsNullOrEmpty(Model.DraftOrder?.DraftOrderId)" id="delete-button" class="btn btn-danger">Delete</a>
+                        <a asp-page="./CreateDraftOrder" class="btn btn-danger">Reset</a>
+                        <a asp-page="./ListDraftOrder" class="btn btn-danger">Back to List</a>
+                    </div>
+                </div>
+                <!-- /.CARD TABLE-->
+            </form>
+        </div>
+        <!-- /.col -->
+    </div>
+</section>
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content bg-danger">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete?&hellip;</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                <button id="deleteConfirm" type="button" class="btn btn-outline-light">Save change</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.Main content -->
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<!-- DataTables -->
+<script src="~/lib/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/lib/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- SweetAlert2 -->
+<script src="~/lib/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="~/lib/plugins/toastr/toastr.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="~/lib/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script src="~/lib/plugins/select2/js/select2.min.js"></script>
+
+<script>
+    $(function () {
+        bsCustomFileInput.init();
+        $("select").each((index,item)=>{
+            let value = $(item).attr("value");
+            if(value) {
+            let listvalue = value.split(",");
+             if(listvalue.length > 1){
+                    $(item).val(listvalue).change();
+            } else {
+                 $(item).val(listvalue[0]).change();
+            }
+            }
+        });
+        $(document).ready(function() {
+          $(".select2-dropdown").select2();
+          $(".format-currency").each((index,item)=>{
+              $(item).html(formatCurrency($(item).html()));
+          })
+        });
+        $("#delete-button").click(function(e){
+            $('#deleteModal').modal('show');
+            $('#deleteConfirm').click(function (e) {
+                $('#deleteModal').modal('hide');
+                window.location.href = '/Admin/ShopPage/DraftOrder/CreateDraftOrder?handler=Delete&draftOrderId=' + '@Model.DraftOrder?.DraftOrderId';
+            });
+        });
+    });
+     function SelectProduct(){
+        let ProductId = $("#select-product").val();
+        if(!ProductId || $("#product-" + ProductId).length > 0) return;
+        let html = "";
+        var index = @ListProductCount;
+        let price = $("#"+ProductId).data("price");
+        let name = $("#"+ProductId).data("name");
+        html += `<div class="input-group" id="product-${ProductId}">
+                    <div class="form-group col-sm-5">
+                        <div>${name}</div>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <input  id="product-quantity-${ProductId}" onchange="UpdateTotalPrice('${ProductId}')" type="text" class="form-control text-right quantity" placeholder="Enter ..." name="ListProduct[${index}].Quantity" value="1">
+                    </div>
+                    <div class="form-group col-sm-2">
+                            <div class="text-right product-price">${formatCurrency(price)}</div>
+                    </div>
+                    <div class="form-group col-sm-2">
+                            <div class="text-right total-price">${formatCurrency(price)}</div>
+                    </div>
+                    <div onclick="$(this).parent().remove();renumber_blocks();" class="form-group col-sm-1 close-content">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <input hidden name="ListProduct[${index}].ProductName" value="${name}">
+                    <input hidden name="ListProduct[${index}].ProductId" value="${ProductId}">
+                    <input hidden name="ListProduct[${index}].ProductPrice" value="${price}">
+                </div>`;
+
+        if(html != "") {
+            $("#list-product").append(html);
+        }
+        renumber_blocks();
+        UpdateTotalPrice();
+    }
+    function renumber_blocks() {
+        $("#list-product .input-group").each(function(index) {
+            var prefix = "ListProduct[" + index + "]";
+            $(this).find("input").each(function() {
+                this.name = this.name.replace(/ListProduct\[\d+\]/, prefix);
+            });
+        });
+    }
+    function UpdateTotalPrice(productId){
+        let productQuantity = $("#product-quantity-" + productId).val();
+        let totalPrice = $("#"+productId).data("price") * productQuantity;
+        $("#product-" + productId + " .total-price").html(formatCurrency(totalPrice));
+        ChangeTotalProductPrice();
+    }
+    function formatCurrency(text){
+        return Number(text).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+    }
+    function ChangeTotalProductPrice(){
+        let total = 0;
+        $("#list-product .input-group").each((index,item)=> {
+            let quantity = $(item).find(".quantity").val().replace(/\D/g,'');
+            let productPrice = $(item).find(".product-price").html().replace(/\D/g,'');
+            total += quantity*productPrice;
+        })
+        $('#product-price').html(formatCurrency(total));
+        $('#total-price').html(formatCurrency(total));
+        CaculatorPromotion();
+    }
+
+     $(function () {
+        $("#caculator").click(function () {
+            CaculatorPromotion()
+        });
+    });
+    function CaculatorPromotion(){
+        $("#display-promotion").empty();
+        $.each($("#PromotionIds").val(),(index,item)=> {
+            var title = $('#PromotionIds option[value="'+item+'"]').data("title");
+            $("#display-promotion").append('<div class="col-sm-12">'+title+'</div>');
+
+        });
+        $.each($("#TransportPromotionIds").val(),(index,item)=> {
+            var title = $('#TransportPromotionIds option[value="'+item+'"]').data("title");
+            $("#display-promotion").append('<div class="col-sm-12">'+title+'</div>');
+        });
+          $.ajax({
+                type: "POST",
+                url: "?handler=Caculator",
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                data:  $('#quickForm').serialize() ,
+                success: function (response) {
+                    if(response.result) {
+                        $("#transport-price").text(formatCurrency(response.totalTransportPrice));
+                        $("#transport-promotion-price").text(formatCurrency(response.totalTransportPromotionPrice));
+                        $("#promotion-price").text(formatCurrency(response.totalPromotionPrice));
+                        $("#total-price").text(formatCurrency(response.totalPriceOrder));
+                         $("#result-text").text("");
+                    }
+                    else {
+                        $("#result-text").text(response.message);
+                    }
+                },
+                error: function (response) {
+
+                    alert(response.responseText);
+                }});
+    }
+</script>
+}

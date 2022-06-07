@@ -1,0 +1,3 @@
+Database and Contents Copyright (c) 2020 MaxMind, Inc.
+https://www.maxmind.com/en/accounts/445996/geoip/downloads
+Download: GeoLite2 ASN, GeoLite2 City, GeoLite2 Country

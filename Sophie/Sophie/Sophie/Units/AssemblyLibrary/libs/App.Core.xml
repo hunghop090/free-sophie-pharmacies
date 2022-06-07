@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>App.Core</name>
+    </assembly>
+    <members>
+        <member name="T:App.Core.Entities.ApplicationDevice">
+            <summary>
+            Lưu trữ các thiết bị đã đăng nhập
+            </summary>
+        </member>
+        <member name="M:App.Core.Middleware.HandshakeMiddleware.GetIPClient(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Lấy thông tin IpClient
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.Middleware.HandshakeMiddleware.IsSwagger(Microsoft.AspNetCore.Http.HttpContext,System.Int32)">
+            <summary>
+            Kiểm tra request có phải từ Swagger + thời gian Expires tính theo giờ VietNam
+            </summary>
+            <param name="context"></param>
+            <param name="dayExpired"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.Middleware.HandshakeMiddleware.IsShandshake(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Kiểm tra request có handshake hay không? + key có empty hay không?
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.Middleware.HandshakeMiddleware.IsSystemEnable(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Kiểm tra hệ thống có đang được mở hay không?
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.Middleware.HandshakeMiddleware.IsInListIngore(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Kiểm tra request có nằm trong danh sách ListIgnore hay không?
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.Middleware.HandshakeMiddleware.IsInWhiteListIp(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            Kiếm tra IpClient có nằm trong danh sách WhiteListIp
+            </summary>
+            <param name="context"></param>
+            <param name="ipClient"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.Middleware.HandshakeMiddleware.IsExpiredHandshake(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Kiểm tra Expired của handshake
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.Middleware.HandshakeMiddleware.IsExpiredMhandshake(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Kiểm tra Expired của mhandshake
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="F:App.Core.Middleware.IPAddressTools.IPAddressFinder.OriginIP">
+            <summary>
+            The Origin-IP header.
+            </summary>
+        </member>
+        <member name="F:App.Core.Middleware.IPAddressTools.IPAddressFinder.RealIP">
+            <summary>
+            The X-Real-IP header.
+            </summary>
+        </member>
+        <member name="F:App.Core.Middleware.IPAddressTools.IPAddressFinder.ForwardedFor">
+            <summary>
+            The X-Forwarded-For header.
+            </summary>
+        </member>
+        <member name="F:App.Core.Middleware.IPAddressTools.IPAddressFinder.OriginalFor">
+            <summary>
+            The X-Original-For header.
+            </summary>
+        </member>
+        <member name="M:App.Core.SystemExtensions.IsEnable">
+            <summary>
+            Kích hoạt kiểm tra tên, địa chỉ Mac của máy tính
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.SystemExtensions.GetMachineName">
+            <summary>
+            Lấy tên máy tính
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.SystemExtensions.GetMacAddress">
+            <summary>
+            Lấy địa chỉ Mac của máy tính
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.SystemExtensions.GetLocalIPv4(System.Net.NetworkInformation.NetworkInterfaceType)">
+            <summary>
+            Lấy địa chỉ ip của máy tính
+            </summary>
+            <param name="_type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:App.Core.SystemExtensions.GetAllLocalIPv4(System.Net.NetworkInformation.NetworkInterfaceType)">
+            <summary>
+            Lấy toàn bộ địa chỉ ip của máy tính
+            </summary>
+            <param name="_type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:App.Core.Units.JsonConverterDateTimeNullable">
+            <summary>
+            System.Text.Json
+            </summary>
+        </member>
+        <member name="T:App.Core.Units.NewtonsoftJsonConverterDateTimeNullable">
+            <summary>
+            Newtonsoft.Json
+            </summary>
+        </member>
+        <member name="T:App.Core.Units.Log4Net.FileLoggerFactoryExtensions">
+            <summary>
+            Extensions for adding the <see cref="T:App.Core.Units.Log4Net.FileLoggerProvider" /> to the <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder" />
+            </summary>
+        </member>
+        <member name="M:App.Core.Units.Log4Net.FileLoggerFactoryExtensions.AddCustomFileLoggerProvider(Microsoft.Extensions.Logging.ILoggingBuilder)">
+            <summary>
+            Adds a file logger named 'File' to the factory.
+            </summary>
+            <param name="builder">The <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> to use.</param>
+        </member>
+        <member name="M:App.Core.Units.Log4Net.FileLoggerFactoryExtensions.AddCustomFileLoggerProvider(Microsoft.Extensions.Logging.ILoggingBuilder,System.String)">
+            <summary>
+            Adds a file logger named 'File' to the factory.
+            </summary>
+            <param name="builder">The <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> to use.</param>
+            <param name="filename">Sets the filename prefix to use for log files</param>
+        </member>
+        <member name="M:App.Core.Units.Log4Net.FileLoggerFactoryExtensions.AddCustomFileLoggerProvider(Microsoft.Extensions.Logging.ILoggingBuilder,System.Action{App.Core.Units.Log4Net.FileLoggerOptions},System.Action{App.Core.Units.Log4Net.Internal.BatchingLoggerOptions})">
+            <summary>
+            Adds a file logger named 'File' to the factory.
+            </summary>
+            <param name="builder">The <see cref="T:Microsoft.Extensions.Logging.ILoggingBuilder"/> to use.</param>
+            <param name="fileOptions">Configure an instance of the <see cref="T:App.Core.Units.Log4Net.FileLoggerOptions" /> to set logging options</param>
+            <param name="batchingOptions">Configure an instance of the <see cref="T:App.Core.Units.Log4Net.Internal.BatchingLoggerOptions" /> to set logging options</param>
+        </member>
+        <member name="T:App.Core.Units.Log4Net.FileLoggerOptions">
+            <summary>
+            Options for file logging.
+            </summary>
+        </member>
+        <member name="P:App.Core.Units.Log4Net.FileLoggerOptions.FileSizeLimit">
+            <summary>
+            Gets or sets a strictly positive value representing the maximum log size in bytes or null for no limit.
+            Once the log is full, no more messages will be appended.
+            Defaults to <c>10MB</c>.
+            </summary>
+        </member>
+        <member name="P:App.Core.Units.Log4Net.FileLoggerOptions.RetainedFileCountLimit">
+            <summary>
+            Gets or sets a strictly positive value representing the maximum retained file count or null for no limit.
+            Defaults to <c>2</c>.
+            </summary>
+        </member>
+        <member name="P:App.Core.Units.Log4Net.FileLoggerOptions.FileName">
+            <summary>
+            Gets or sets the filename prefix to use for log files.
+            Defaults to <c>logs-</c>.
+            </summary>
+        </member>
+        <member name="P:App.Core.Units.Log4Net.FileLoggerOptions.Extension">
+            <summary>
+            Gets or sets the filename extension to use for log files.
+            Defaults to <c>txt</c>.
+            Will strip any prefixed .
+            </summary>
+        </member>
+        <member name="P:App.Core.Units.Log4Net.FileLoggerOptions.Periodicity">
+            <summary>
+            Gets or sets the periodicity for rolling over log files.
+            </summary>
+        </member>
+        <member name="P:App.Core.Units.Log4Net.FileLoggerOptions.LogDirectory">
+            <summary>
+            The directory in which log files will be written, relative to the app process.
+            Default to <c>Logs</c>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:App.Core.Units.Log4Net.FileLoggerProvider">
+            <summary>
+            An <see cref="T:Microsoft.Extensions.Logging.ILoggerProvider" /> that writes logs to a file
+            </summary>
+        </member>
+        <member name="M:App.Core.Units.Log4Net.FileLoggerProvider.#ctor(Microsoft.Extensions.Options.IOptionsMonitor{App.Core.Units.Log4Net.FileLoggerOptions},Microsoft.Extensions.Options.IOptionsMonitor{App.Core.Units.Log4Net.Internal.BatchingLoggerOptions},App.Core.Services.LogMongoService)">
+            <summary>
+            Creates an instance of the <see cref="T:App.Core.Units.Log4Net.FileLoggerProvider" /> 
+            </summary>
+            <param name="fileOptions">The options object controlling the logger</param>
+            <param name="batchingOptions">The options object controlling the logger</param>
+            <param name="logMongoService">The service connect database</param>
+        </member>
+        <member name="M:App.Core.Units.Log4Net.FileLoggerProvider.WriteMessagesAsync(System.Collections.Generic.IEnumerable{App.Core.Units.Log4Net.Internal.LogMessage},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:App.Core.Units.Log4Net.FileLoggerProvider.RollFiles">
+            <summary>
+            Deletes old log files, keeping a number of files defined by <see cref="P:App.Core.Units.Log4Net.FileLoggerOptions.RetainedFileCountLimit" />
+            </summary>
+        </member>
+        <member name="P:App.Core.Units.Log4Net.Internal.BatchingLoggerOptions.FlushPeriod">
+            <summary>
+            Gets or sets the period after which logs will be flushed to the store.
+            </summary>
+        </member>
+        <member name="P:App.Core.Units.Log4Net.Internal.BatchingLoggerOptions.BackgroundQueueSize">
+            <summary>
+            Gets or sets the maximum size of the background log message queue or null for no limit.
+            After maximum queue size is reached log event sink would start blocking.
+            Defaults to <c>1000</c>.
+            </summary>
+        </member>
+        <member name="P:App.Core.Units.Log4Net.Internal.BatchingLoggerOptions.BatchSize">
+            <summary>
+            Gets or sets a maximum number of events to include in a single batch or null for no limit.
+            </summary>
+            Defaults to <c>null</c>.
+        </member>
+        <member name="P:App.Core.Units.Log4Net.Internal.BatchingLoggerOptions.IsEnabled">
+            <summary>
+            Gets or sets value indicating if logger accepts and queues writes.
+            </summary>
+        </member>
+        <member name="P:App.Core.Units.Log4Net.Internal.BatchingLoggerOptions.IncludeScopes">
+            <summary>
+            Gets or sets a value indicating whether scopes should be included in the message.
+            Defaults to <c>false</c>.
+            </summary>
+        </member>
+    </members>
+</doc>

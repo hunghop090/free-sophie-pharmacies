@@ -1,0 +1,176 @@
+﻿@page
+@model Sophie.Areas.Admin.Pages.User.LoginDarkModel
+@{
+    ViewData["Title"] = "Login system";
+}
+
+@section Styles {
+    <style>
+        .container {
+            max-width: 100%;
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+        .login-link {
+            display: inline !important;
+        }
+    </style>
+    <!-- inject:css -->
+    <link rel="stylesheet" href="~/material/css/lib/getmdl-select.min.css">
+    <link rel="stylesheet" href="~/material/css/lib/nv.d3.min.css">
+    <link rel="stylesheet" href="~/material/css/application.min.css">
+    <!-- endinject -->
+}
+
+@await Html.PartialAsync("~/Areas/Admin/Shared/_StatusMessage.cshtml", Model.ErrorMessage)
+
+
+<div class="mdl-layout mdl-js-layout color--gray is-small-screen login">
+    <main class="mdl-layout__content">
+        <div class="mdl-card mdl-card__login mdl-shadow--2dp">
+            <div class="mdl-card__supporting-text color--dark-gray">
+                <div class="mdl-grid">
+
+                    <form id="account" method="post" autocomplete="off">
+                        <div class="mdl-cell mdl-cell--12-col mdl-cell--4-col-phone">
+                            <span class="mdl-card__title-text text-color--smooth-gray">SOPHIE</span>
+                        </div>
+                        <div class="mdl-cell mdl-cell--12-col mdl-cell--4-col-phone">
+                            <span class="login-name text-color--white">@ViewData["Title"]</span>
+                            <span class="login-secondary-text text-color--smoke">Enter fields to sign in to Sophie</span>
+                        </div>
+                        <div class="mdl-cell mdl-cell--12-col mdl-cell--4-col-phone">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+                                <input asp-for="Input.Email" class="mdl-textfield__input" type="text" id="e-mail">
+                                <label class="mdl-textfield__label" for="e-mail">Email</label>
+                            </div>
+                            <span asp-validation-for="Input.Email" class="text-danger" style="font-size: 12px"></span>
+
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+                                <input asp-for="Input.Password" class="mdl-textfield__input" type="text" id="password">
+                                <label class="mdl-textfield__label" for="password">Password</label>
+                            </div>
+                            <span asp-validation-for="Input.Password" class="text-danger" style="font-size: 12px"></span>
+
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label asp-for="Input.RememberMe">
+                                        <input asp-for="Input.RememberMe" />
+                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                    </label>
+                                </div>
+                            </div>
+                            <div asp-validation-summary="ModelOnly" class="text-danger" style="font-size: 14px"></div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--12-col mdl-cell--4-col-phone submit-cell">
+                            <div class="mdl-layout-spacer"></div>
+                            <input type="submit" value="SIGN IN" class="mdl-button mdl-js-button mdl-button--raised color--light-blue">
+                        </div>
+                        <div class="mdl-cell mdl-cell--12-col mdl-cell--4-col-phone">
+                            @*<a href="#" class="login-link">Forgot password?</a>*@
+                            <a asp-page="./ForgotPassword" class="login-link">Forgot your password?</a>
+                            <br />
+                            @*<a href="#" class="login-link">Don't have account?</a>*@
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="login-link">Register as a new user</a>
+                        </div>
+                    </form>
+
+                    <environment include="Development">
+                        <div class="mdl-cell mdl-cell--12-col mdl-cell--4-col-phone">
+                            <p>Use another service to login </p>
+                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                                <div>
+                                    <p>
+                                        @if (Model.ExternalLogins != null)
+                                        {
+                                            @foreach (var provider in Model.ExternalLogins)
+                                            {
+                                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </environment>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!--<div class="login-wrapper login-box">
+    <div class="form">
+        <form id="account" method="post" autocomplete="off">
+            <img src="~/img/avatar.png" alt="">
+            <h2>@ViewData["Title"]</h2>
+
+            <div class="input-group">
+                <input type="text" asp-for="Input.Email" id="loginUsername" required>
+                <label asp-for="Input.Email">Email</label>
+            </div>
+            <span asp-validation-for="Input.Email" class="text-danger" style="font-size: 12px"></span>
+
+            <div class="input-group">
+                <input type="password" asp-for="Input.Password" id="loginPassword" required>
+                <label asp-for="Input.Password">Password</label>
+            </div>
+            <span asp-validation-for="Input.Password" class="text-danger" style="font-size: 12px"></span>-->
+<!-- <div asp-validation-summary="All" class="text-danger" style="font-size: 14px"></div> -->
+<!--<div asp-validation-summary="ModelOnly" class="text-danger" style="font-size: 14px"></div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label asp-for="Input.RememberMe">
+                        <input asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                </div>
+            </div>
+
+            <input type="submit" value="Login" class="submit-btn">
+
+            <p><a asp-page="./ForgotPassword" class="forgot-pw">Forgot your password?</a></p>
+            <p><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="forgot-pw">Register as a new user</a></p>
+        </form>
+
+        <environment include="Development">
+            <p>Use another service to log in:</p>
+            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div>
+                    <p>
+                        @if (Model.ExternalLogins != null)
+                        {
+                            @foreach (var provider in Model.ExternalLogins)
+                            {
+                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                            }
+                        }
+                    </p>
+                </div>
+            </form>
+        </environment>
+
+    </div>
+</div>-->
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <!-- inject:js -->
+    <script src="~/material/js/d3.min.js"></script>
+    <script src="~/material/js/getmdl-select.min.js"></script>
+    <script src="~/material/js/material.min.js"></script>
+    <script src="~/material/js/nv.d3.min.js"></script>
+    <script src="~/material/js/layout/layout.min.js"></script>
+    <script src="~/material/js/scroll/scroll.min.js"></script>
+    <script src="~/material/js/widgets/charts/discreteBarChart.min.js"></script>
+    <script src="~/material/js/widgets/charts/linePlusBarChart.min.js"></script>
+    <script src="~/material/js/widgets/charts/stackedBarChart.min.js"></script>
+    <script src="~/material/js/widgets/employer-form/employer-form.min.js"></script>
+    <script src="~/material/js/widgets/line-chart/line-charts-nvd3.min.js"></script>
+    <script src="~/material/js/widgets/map/maps.min.js"></script>
+    <script src="~/material/js/widgets/pie-chart/pie-charts-nvd3.min.js"></script>
+    <script src="~/material/js/widgets/table/table.min.js"></script>
+    <script src="~/material/js/widgets/todo/todo.min.js"></script>
+    <!-- endinject -->
+}

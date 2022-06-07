@@ -1,0 +1,316 @@
+﻿@page
+@using Sophie.Areas.Admin.Pages.Dashboard
+
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["NameActivePage"] = NavigationPages.Dashboard;
+}
+
+@section Styles {
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="~/lib/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/lib/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/lib/plugins/jqvmap/jqvmap.min.css">
+    <!-- OverlayScrollbars -->
+    <link rel="stylesheet" href="~/lib/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/lib/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/lib/plugins/summernote/summernote-bs4.css">
+}
+@await Html.PartialAsync("~/Areas/Admin/Shared/_StatusMessage.cshtml", Model.StatusMessage)
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">@ViewData["Title"] </h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.Content Header -->
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>@Model.TotalAccount</h3>
+                        <p>Member Registrations</p>
+                    </div>
+                    <div class="icon">
+                        <i class="nav-icon fas fa-users"></i>
+                    </div>
+                    <a href="~/Admin/AccountPage/List" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>@Model.TotalHospital</h3>
+                        <p>Hospital Registrations</p>
+                    </div>
+                    <div class="icon">
+                        <i class="nav-icon fas fa-clinic-medical"></i>
+                    </div>
+                    <a href="~/Admin/HospitalPage/List" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>@Model.TotalDoctor</h3>
+                        <p>Doctor Registrations</p>
+                    </div>
+                    <div class="icon">
+                        <i class="nav-icon fas fa-user-nurse"></i>
+                        
+                    </div>
+                    <a href="~/Admin/DoctorPage/List" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>@Model.TotalMedicalAppointment<sup style="font-size: 20px">%</sup></h3>
+                        <p>Medical Appointment</p>
+                    </div>
+                    <div class="icon">
+                        <i class="nav-icon fas fa-notes-medical"></i>
+                    </div>
+                    <a href="~/Admin/AppointmentPage/List" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.Small boxes (Stat box) -->
+
+        <!-- Main row -->
+        <div class="row">
+            <div class="col-12">
+                <!-- interactive chart -->
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="far fa-chart-bar"></i>
+                            CPU Speed Area Chart, <i>MachineName: @Model.MachineName</i>, MachineIP: <i>@Model.MachineIP</i>, MacAddress: <i>@Model.MacAddress</i>
+                        </h3>
+
+                        <div class="card-tools">
+                            Real time
+                            <div class="btn-group" id="realtime" data-toggle="btn-toggle">
+                                <button type="button" class="btn btn-default btn-sm active" data-toggle="on">On</button>
+                                <button type="button" class="btn btn-default btn-sm" data-toggle="off">Off</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="interactive" style="height: 300px;"></div>
+                    </div>
+                    <!-- /.card-body-->
+                </div>
+                <!-- /.card -->
+
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.Main row -->
+
+    </div>
+</section>
+<!-- /.Main content -->
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- ChartJS -->
+    @*<script src="~/lib/plugins/chart.js/Chart.min.js"></script>*@
+    <!-- Sparkline -->
+    @*<script src="~/lib/plugins/sparklines/sparkline.js"></script>*@
+    <!-- JQVMap -->
+    @*<script src="~/lib/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <script src="~/lib/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>*@
+    <!-- jQuery Knob Chart -->
+    @*<script src="~/lib/plugins/jquery-knob/jquery.knob.min.js"></script>*@
+    <!-- Daterange picker -->
+    @*<script src="~/lib/plugins/moment/moment.min.js"></script>
+        <script src="~/lib/plugins/daterangepicker/daterangepicker.js"></script>*@
+    <!-- Tempusdominus Bootstrap 4 -->
+    @*<script src="~/lib/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>*@
+    <!-- Summernote -->
+    @*<script src="~/lib/plugins/summernote/summernote-bs4.min.js"></script>*@
+    <!-- OverlayScrollbars -->
+    @*<script src="~/lib/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>*@
+    <!-- AdminLTE dashboard demo. This is only for demo purposes-->
+    @*<script src="~/dist/js/pages/dashboard.js"></script>*@
+
+    <!-- jQuery -->
+    <script src="~/lib/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="~/lib/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/lib/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- FLOT CHARTS -->
+    <script src="~/lib/plugins/flot/jquery.flot.js"></script>
+    <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+    <script src="~/lib/plugins/flot-old/jquery.flot.resize.min.js"></script>
+    <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+    <script src="~/lib/plugins/flot-old/jquery.flot.pie.min.js"></script>
+
+    <script>
+        /*
+        * Flot Interactive Chart
+        * -----------------------
+        */
+        // We use an inline data source in the example, usually data would be fetched from a server
+        var data = [];
+        var totalPoints = 50;
+        var first = 80;
+        var max = 100;
+        function getRandomData() {
+            if (data.length > 0) {
+                data = data.slice(1)
+            } else if (data.length == 0) {
+                data.push(first)
+            }
+
+            // Do a random walk 
+            while (data.length < totalPoints) {
+                var prev = data.length > 0 ? data[data.length - 1] : 50;
+                var y = prev + Math.random() * 10 - 5;
+
+                if (y < 0) {
+                    y = 0
+                } else if (y > max) {
+                    y = max
+                }
+
+                data.push(y)
+            }
+
+            // Zip the generated y values with the x values
+            var res = []
+            for (var i = 0; i < data.length; ++i) {
+                res.push([i, data[i]])
+            }
+
+            return res
+        };
+
+        function getInfoData() {
+            $.ajax({
+                type: "POST",
+                url: "?handler=CpuUsageForProcess",
+                data: {},
+                headers: {
+                    RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    //console.log(response);
+
+                    // Remove first item
+                    if (data.length > 0) {
+                        data = data.slice(1)
+                    }
+                    data.push(response.data)
+
+                    // Zip the generated y values with the x values
+                    var res = []
+                    for (var i = 0; i < data.length; ++i) {
+                        res.push([i, data[i]])
+                    }
+
+                    // Draw
+                    interactive_plot.setData([res])
+                },
+                error: function (result, status, err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        var interactive_plot = $.plot('#interactive', [
+            {
+                data: getRandomData(),
+            }
+        ],
+            {
+                grid: {
+                    borderColor: '#f3f3f3',
+                    borderWidth: 1,
+                    tickColor: '#f3f3f3'
+                },
+                series: {
+                    color: '#3c8dbc',
+                    lines: {
+                        lineWidth: 2,
+                        show: true,
+                        fill: true,
+                    },
+                },
+                yaxis: {
+                    min: 0,
+                    max: 100,
+                    show: true
+                },
+                xaxis: {
+                    show: true
+                }
+            }
+        );
+
+        var updateInterval = 1500 //Fetch data ever x milliseconds
+        var realtime = 'on' //If == to on then fetch data every x seconds. else stop fetching 
+        function update() {
+            getInfoData();
+
+            // Since the axes don't change, we don't need to call plot.setupGrid()
+            interactive_plot.draw()
+            if (realtime === 'on') {
+                setTimeout(update, updateInterval)
+            }
+        }
+
+        //INITIALIZE REALTIME DATA FETCHING
+        if (realtime === 'on') {
+            update()
+        }
+        //REALTIME TOGGLE
+        $('#realtime .btn').click(function () {
+            if ($(this).data('toggle') === 'on') {
+                realtime = 'on'
+                console.log('on')
+            }
+            else {
+                realtime = 'off'
+                console.log('off')
+            }
+            update()
+        })
+        /*
+        * END INTERACTIVE CHART
+        */
+    </script>
+}

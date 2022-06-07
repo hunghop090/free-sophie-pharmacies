@@ -1,0 +1,496 @@
+﻿@page
+@using App.Core.Constants
+@using Microsoft.AspNetCore.Components
+@using Sophie.Areas.Admin.ShopPage
+@using Microsoft.AspNetCore.Components.Web
+
+@model Sophie.Areas.Admin.ShopPage.CreateProductModel
+@{
+
+    ViewData["Title"] = "Create Product Page";
+    ViewData["NameActivePage"] = NavigationPages.Create_Product;
+}
+
+@section Styles {
+<style>
+    .selected {
+        background-color: #cff4d6 !important;
+    }
+
+    .custom-file {
+        height: 100px;
+    }
+
+        .custom-file img {
+            width: 100px;
+            height: 100px;
+            margin-left: 16px;
+            object-fit: contain;
+        }
+
+        .custom-file div {
+            position: relative;
+        }
+
+        .custom-file i {
+            position: absolute;
+            right: 0px;
+        }
+
+    .close-content, .add-content {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        font-size: 30px;
+    }
+</style>
+<!-- DataTables -->
+<link rel="stylesheet" href="~/lib/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="~/lib/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="~/lib/plugins/toastr/toastr.min.css">
+}
+@await Html.PartialAsync("~/Areas/Admin/Shared/_StatusMessage.cshtml", Model.StatusMessage)
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">@ViewData["Title"]</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Product</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.Content Header -->
+<!-- Main content -->
+<section class="content" style="padding: 0px 0px 0px 0px !important">
+    <div class="row">
+        <div class="col-12">
+            <!-- left column -->
+            <div class="col-md-6">
+            </div>
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+            </div>
+            <!--/.col (right) -->
+
+            <form id="quickForm" role="form" asp-page-handler="Create" method="post" enctype="multipart/form-data">
+                <!-- CARD TABLE-->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Create new product</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Shop</label>
+                                    <select name="ShopId" class="form-control">
+                                        @foreach (var item in Model.ListShop)
+                                        {
+                                            <option value="@item.ShopId">@item.ShopName</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>ProductName</label>
+                                    <input type="text" class="form-control" placeholder="Enter ..." id="ProductName" name="ProductName" value="@Model.Product?.ProductName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    @Html.DropDownList("CategoryId",
+                                    Model.ListSelectCategory,
+                                    new { id = "CategoryId", @class= "form-control",value=@Model.Product?.CategoryId })
+                                </div>
+                                <div class="form-group" style="display: none" id="select-sub">
+                                    <label>SubCategory</label>
+                                    <select class="form-control" id="SubCategoryId" name="SubCategoryId" value="@Model.Product?.SubCategoryId">
+                                    </select>
+                                </div>
+
+                                <!-- text input -->
+
+                                <div class="form-group">
+                                    <label>Giá sản phẩm</label>
+                                    <input type="number" class="form-control" placeholder="Enter ..." id="ProductPrice" name="ProductPrice" value="@Model.Product?.ProductPrice">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phần trăm giảm giá</label>
+                                    <input type="number" min="0" max="100" class="form-control" placeholder="Enter ..." id="ProductDiscounts" name="ProductDiscounts" value="@Model.Product?.ProductDiscounts">
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6">
+
+                                <div class="form-group">
+                                    <label>Giá thực sản phẩm</label>
+                                    <input type="number" class="form-control" placeholder="Enter ..." id="ProductRealPrice" name="ProductRealPrice" value="@Model.Product?.ProductRealPrice">
+                                </div>
+                                <div class="form-group">
+                                    <label>Số lượng sản phẩm</label>
+                                    <input type="number" class="form-control" placeholder="Enter ..." id="ProductNumber" name="ProductNumber" value="@Model.Product?.ProductNumber">
+                                </div>
+                                <div class="form-group">
+                                    <label>Type</label>
+                                    @*<input type="text" class="form-control" placeholder="Enter ..." name="Type" value="@Model.Product?.Type">*@
+                                    <select class="form-control" id="Type" name="Type" value="@Model.Product?.Type">
+                                        <option value="Actived">Actived</option>
+                                        <option value="Draft">Draft</option>
+                                        <option value="Trash">Trash</option>
+                                    </select>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Sell Over</label>
+                                    <select class="form-control" id="SellOver" name="SellOver" data-value="@Model.Product?.SellOver" value="@Model.Product?.SellOver">
+                                        <option value="false">False</option>
+                                        <option value="true">True</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label>Product content</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="form-group col-sm-3">
+                                            <label>Title</label>
+                                            <input type="text" class="form-control" placeholder="Enter ..." name="ProductInfo[@Model.Product?.ProductInfo?.Count || 0].Title">
+                                        </div>
+                                        <div class="form-group col-sm-8">
+                                            <label>Content</label>
+                                            <input type="text" class="form-control" placeholder="Enter ..." name="ProductInfo[@Model.Product?.ProductInfo?.Count || 0].Content">
+                                        </div>
+                                        <div class="form-group col-sm-1 add-content" onclick="AddContent(event)" data-index="@Model.Product?.ProductInfo?.Count || 0">
+                                            <i class="fas fa-plus-circle"></i>
+                                        </div>
+                                    </div>
+
+                                    @for (var i = 0; i < @Model.Product?.ProductInfo?.Count; i++)
+                                    {
+                                        var info = @Model.Product?.ProductInfo[i];
+                                        <div class="input-group">
+                                            <div class="form-group col-sm-3">
+                                                <label>Title</label>
+                                                <input type="text" class="form-control" placeholder="Enter ..." name="ProductInfo[@i].Title" value="@info.Title">
+                                            </div>
+                                            <div class="form-group col-sm-8">
+                                                <label>Content</label>
+                                                <input type="text" class="form-control" placeholder="Enter ..." name="ProductInfo[@i].Content" value="@info.Content">
+                                            </div>
+                                            <div class="form-group col-sm-1 close-content">
+                                                <i class="fas fa-times-circle"></i>
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Product Image</label>
+                                    <div>
+                                        <div class="btn btn-default btn-file">
+                                            <i class="fas fa-paperclip"></i> Attachment
+                                            <input id="myFileUpload" name="Attachment" accept="image/jpeg, image/jpg, image/png" type="file" multiple>
+                                        </div>
+                                        <p class="help-block">Max. 32MB</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white">
+                                    <ul id="show-myFileUpload" class="mailbox-attachments d-flex align-items-stretch clearfix">
+                                        @if (Model.ListImageInfo != null)
+                                        {
+                                            @foreach (var imagePath in Model.ListImageInfo)
+                                            {
+                                                <li>
+                                                    <span class="mailbox-attachment-icon has-img" style="overflow: hidden;">
+                                                        <img src="@imagePath.Url" alt="Attachment">
+                                                    </span>
+                                                    <div class="mailbox-attachment-info">
+                                                        <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> @imagePath.KeyImage</a>
+                                                        <span class="mailbox-attachment-size clearfix mt-1">
+                                                            <a onclick="$(this).parent().parent().parent().remove()" class="btn btn-default btn-sm float-right"><i class="fas fa-trash-alt"></i></a>
+                                                        </span>
+                                                    </div>
+                                                    <input hidden name="ProductImages" value="@imagePath.KeyImage" />
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <input hidden type="text" class="form-control" placeholder="Enter ..." id="ProductId" name="ProductId" value="@Model.Product?.ProductId">
+                        <input hidden type="text" class="form-control" placeholder="Enter ..." id="ShopId" name="ShopId" value="@Model.Product?.ShopId">
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <button type="submit" id="btn_create_save" class="btn btn-success">@(string.IsNullOrEmpty(Model.Product?.ProductId) ? "Create":"Update")</button>
+                        <a hidden="@string.IsNullOrEmpty(Model.Product?.ProductId)" id="delete-button" class="btn btn-danger">Delete</a>
+                        <a asp-page="./CreateProduct" class="btn btn-danger">Reset</a>
+                        <a asp-page="./ListProduct" class="btn btn-danger">Back to List</a>
+                    </div>
+                </div>
+                <!-- /.CARD TABLE-->
+            </form>
+        </div>
+        <!-- /.col -->
+    </div>
+    @if (User.IsInRole(RolePrefix.Developer) || User.IsInRole(RolePrefix.Admin) || User.IsInRole(RolePrefix.AdminSys))
+    {
+        <form role="form" asp-page-handler="FakeData" method="post">
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Fake Data</button>
+            </div>
+        </form>
+
+        <form role="form" asp-page-handler="DeleteFakeData" method="post">
+            <div class="card-footer">
+                <button type="submit" class="btn btn-danger">Delete Fake Data</button>
+            </div>
+        </form>
+    }
+</section>
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content bg-danger">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete?&hellip;</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                <button id="deleteConfirm" type="button" class="btn btn-outline-light">Save change</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.Main content -->
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<!-- SweetAlert2 -->
+<script src="~/lib/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="~/lib/plugins/toastr/toastr.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="~/lib/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script src="~/lib/uploadfile/jquery.form.js"></script>
+<script src="~/lib/uploadfile/jquery.uploadfile.min.js"></script>
+<script>
+    $(function () {
+        bsCustomFileInput.init();
+        let json = @Html.Raw(Json.Serialize(Model.ListCategory));
+        RenderSubCategory();
+        $("#delete-button").click(function(e){
+            $('#deleteModal').modal('show');
+            $('#deleteConfirm').click(function (e) {
+                $('#deleteModal').modal('hide');
+                window.location.href = '/Admin/ShopPage/Product/CreateProduct?handler=Delete&productId=' + '@Model.Product?.ProductId';
+            });
+        });
+         $('#CategoryId').change(function () {
+           RenderSubCategory();
+        });
+        $('.custom-file i').click(function(e){
+           $(e.currentTarget).parent().remove();
+        })
+        $('.close-content').click(function(e){
+           $(e.currentTarget).parent().remove();
+        })
+          $("select").each((index,item)=>{
+        if($(item).attr("value")){
+            if($(item).attr("value") == "value"){
+                $(item).find("option").each(function(ind,va)
+                {
+                    if($(va).text() == $(item).data("value"))
+                    $(va).prop("selected", true)
+
+                });
+            }
+            else
+             $(item).val($(item).attr("value")).change();
+        }
+    });
+        function RenderSubCategory() {
+         let category = json.find(x=>x.categoryId == $("#CategoryId").val());
+            let html = "";
+            if(category) {
+                category.listSubCategory?.forEach((item)=>{
+                    html += ` <option value="${item.subCategoryId}">${item.subCategoryName}</option>`
+                })
+                $("#SubCategoryId").empty();
+            }
+
+            if(html != "") {
+                $("#SubCategoryId").append(html);
+                $("#select-sub").show();
+            } else {
+                $("#select-sub").hide();
+            }
+
+    }
+
+    });
+    function AddContent(e) {
+            var index = $(e.currentTarget).data().index
+            let html = `<div class="input-group">
+                            <div class="form-group col-sm-3">
+                                <label>Title</label>
+                                <input type="text" class="form-control" placeholder="Enter ..." name="ProductInfo[${index + 1}].Title">
+                            </div>
+                            <div class="form-group col-sm-8">
+                                <label>Content</label>
+                                <input type="text" class="form-control" placeholder="Enter ..." name="ProductInfo[${index + 1}].Content">
+                            </div>
+                            <div class="form-group col-sm-1 add-content" onclick="AddContent(event)" data-index="${index + 1}">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                        </div>`
+            $(e.currentTarget).removeClass("add-content");
+            $(e.currentTarget).addClass("close-content");
+           $(e.currentTarget).attr('onclick','RemoveContent(event)');
+            $(e.currentTarget).empty();
+            $(e.currentTarget).append('<i class="fas fa-times-circle"></i>');
+            $(e.currentTarget).parent().parent().prepend(html);
+        }
+        function RemoveContent(e){
+            $(e.currentTarget).parent().remove();
+        }
+        function _onDelete(index, el) {
+            var myFileUpload = document.getElementById("myFileUpload");
+            var files = myFileUpload.files;
+            @*remove file at index*@
+            var fileBuffer = [];
+            Array.prototype.push.apply(fileBuffer, files);
+            fileBuffer.splice(index, 1);
+            const dT = new ClipboardEvent('').clipboardData || new DataTransfer();
+            for (let file of fileBuffer) { dT.items.add(file); }
+            myFileUpload.files = dT.files;
+
+            files = myFileUpload.files;
+            console.log(files);
+            $(".image_" + index).remove()
+        };
+
+        $(function () {
+            @*Add text editor*@
+            @* myFileUpload *@
+            function readURL() {
+                var $input = $(this);
+                var showMyFileUpload = document.getElementById("show-myFileUpload");
+                for (let i = 0; i < this.files.length; i++) {
+                    var file = this.files[i];
+                    console.log(file);
+                    var fileName = file.name;
+                    var fileSize = (file.size / 1024).toFixed(2);
+                    var fileType = file.type;
+
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        @*console.log(e.target);*@
+                        var li = document.createElement('li');
+                        li.className = 'image_' + i;
+                        li.innerHTML = '<span class="mailbox-attachment-icon has-img"><img src="' + e.target.result + '" alt="Attachment"></span>\
+                            <div class="mailbox-attachment-info">\
+                                <a href="#" class="mailbox-attachment-name"><i class="fas fa-camera"></i> ' + fileName + '</a>\
+                                <span class="mailbox-attachment-size clearfix mt-1">\
+                                    <span>' + fileSize + ' KB</span>\
+                                    <a href="javascript:_onDelete('+ i +', this)" class="btn btn-default btn-sm float-right"><i class="fas fa-trash-alt"></i></a>\
+                                </span>\
+                            </div>';
+                        showMyFileUpload.appendChild(li);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            };
+            $("#myFileUpload").change(readURL);
+            @*libFileUpload*@
+            var count = 0;
+            $("#fileuploader").uploadFile({
+                url: "#",
+                returnType: "json",
+                multiple: true,
+                dragDrop: false,
+                fileName: "Attachment",
+                statusBarWidth: 600,
+                dragdropWidth: 600,
+                maxFileCount: 2,
+                maxFileSize: 1000 * 1024,
+                showPreview: true,
+                previewHeight: "100px",
+                previewWidth: "100px",
+                showDelete: true,
+                showDownload: true,
+                showFileSize: true,
+                allowTypes: "jpg,png,gif",
+                acceptFiles: "image/*",
+                autoSubmit: false,
+                customProgressBar: function (obj, s) {
+                    this.statusbar = $("<div class='ajax-file-upload-statusbar'></div>");
+                    this.preview = $("<img class='ajax-file-upload-preview' />").width(s.previewWidth).height(s.previewHeight).appendTo(this.statusbar).hide();
+                    this.filename = $("<div class='ajax-file-upload-filename'></div>").appendTo(this.statusbar);
+                    this.progressDiv = $("<div class='ajax-file-upload-progress'>").appendTo(this.statusbar).hide();
+                    this.progressbar = $("<div class='ajax-file-upload-bar'></div>").appendTo(this.progressDiv);
+                    this.abort = $("<div>" + s.abortStr + "</div>").appendTo(this.statusbar).hide();
+                    this.cancel = $("<div>" + s.cancelStr + "</div>").appendTo(this.statusbar).hide();
+                    this.done = $("<div>" + s.doneStr + "</div>").appendTo(this.statusbar).hide();
+                    this.download = $("<div>" + s.downloadStr + "</div>").appendTo(this.statusbar).hide();
+                    this.del = $("<div>" + s.deleteStr + "</div>").appendTo(this.statusbar).hide();
+
+                    this.abort.addClass("custom-red btn btn-danger");
+                    this.done.addClass("custom-green btn btn-success");
+                    this.download.addClass("custom-green btn btn-success");
+                    this.cancel.addClass("custom-red btn btn-danger");
+                    this.del.addClass("custom-red btn btn-danger");
+
+                    if (count++ % 2 == 0)
+                        this.statusbar.addClass("even");
+                    else
+                        this.statusbar.addClass("odd");
+                    return this;
+                },
+                onSelect: function (files) {
+                    for (let i = 0; i < files.length; i++) {
+                        var file = files[i];
+                        console.log("onSelect " + file.name + " (" + file.size + ")");
+                    }
+                    return true;
+                },
+                dragDropStr: "<span><b>Drag and drop files</b></span>",
+                abortStr: "Abort",
+                cancelStr: "Cancel",
+                doneStr: "Done",
+                multiDragErrorStr: "Multiple File Drag & Drop is not allowed.",
+                extErrorStr: "is not allowed. Allowed extensions:",
+                sizeErrorStr: "is not allowed. Allowed Max size:",
+                dupateErrorStr: "is not allowed. File already exists.",
+                maxFileCountErrorStr: "is not allowed. Maximum allowed files are:",
+                uploadErrorStr: "Upload is not allowed",
+                uploadStr: '<div class="form"><div class="btn btn-default btn-file"><i class="fas fa-paperclip"></i>Attachment</div></div>',
+            });
+
+        })
+</script>
+}

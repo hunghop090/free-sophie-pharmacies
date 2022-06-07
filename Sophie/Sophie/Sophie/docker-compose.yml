@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  sophie_backend:
+    image: aspnetcore_sophie:v1.0
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: sophie_backend
+    restart: "no"
+    ports:
+      - "5005:80"
+    environment:
+      ASPNETCORE_URLS: "http://+:80"
